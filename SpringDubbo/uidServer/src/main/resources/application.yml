@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: uidServer
+  config:
+    import: optional:uidServer:http://localhost:8000
+  cloud:
+    config:
+      # 使用的分支，覆盖server的默认分支
+      label: master
+      # 配置文件环境
+      profile: dev
+      # server地址
+      uri: http://localhost:8000

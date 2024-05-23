@@ -1,0 +1,30 @@
+appName: uidServer
+
+zookeeper:
+  address: 47.103.49.207
+
+
+spring:
+  application:
+    name: ${appName}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+dubbo:
+  application:
+    logger: slf4j
+    name: ${appName}
+  consumer:
+    check: false
+  registry:
+    address: zookeeper://${zookeeper.address:127.0.0.1}:2181
+  protocol:
+    name: dubbo
+    port: 20883
+server:
+  port: 8182
+
+
+logging:
+  config: classpath:logback-boot.xml

@@ -1,0 +1,41 @@
+appName: SpringDubboConsumer
+zookeeper:
+  address: 47.103.49.207
+mysql:
+  address: 124.78.64.33
+
+spring:
+  application:
+    name: ${appName}
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${mysql.address}:3306/love_sea_base?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: 123456
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+
+dubbo:
+  application:
+    logger: slf4j
+    name: ${appName}
+    serialize-check-status: STRICT
+  consumer:
+    check: false
+  registry:
+    address: zookeeper://${zookeeper.address}:2181
+  protocol:
+    name: dubbo
+    port: 20881
+server:
+  port: 8383
+
+logging:
+  config: classpath:logback-boot.xml
+
+
+
+  # 设置日志级别为 INFO
