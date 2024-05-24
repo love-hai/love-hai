@@ -1,6 +1,6 @@
 package com.loveSea.springDubbo.web;
 
-import com.LoveSea.SpringDubbo.web.User;
+import com.loveSea.springDubbo.web.User;
 import com.loveSea.springDubbo.api.DemoService;
 import com.loveSea.springDubbo.model.vo.TbUserVo;
 import lombok.extern.slf4j.Slf4j;

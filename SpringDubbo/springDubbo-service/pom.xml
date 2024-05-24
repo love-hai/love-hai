@@ -134,7 +134,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>com.LoveSea.SpringDubbo.SpringDubboApplication</mainClass>
+                    <mainClass>com.loveSea.springDubbo.SpringDubboApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>

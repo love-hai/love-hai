@@ -1,4 +1,4 @@
-package com.LoveSea.SpringDubbo;
+package com.loveSea.springDubbo;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

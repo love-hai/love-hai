@@ -1,4 +1,4 @@
-package com.LoveSea.SpringDubbo;
+package com.loveSea.springDubbo;
 
 /**
  * @author xiahaifeng

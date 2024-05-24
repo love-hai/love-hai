@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.LoveSea.SpringDubbo.web;
+package com.loveSea.springDubbo.web;
 
 import lombok.Data;
 

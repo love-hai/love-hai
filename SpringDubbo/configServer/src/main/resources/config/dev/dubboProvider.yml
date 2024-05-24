@@ -34,7 +34,7 @@ server:
   port: 8484
 mybatis:
   mapper-locations: classpath:mappers/*xml
-  type-aliases-package: com.LoveSea.SpringDubbo.model.entity
+  type-aliases-package: com.loveSea.springDubbo.model.entity
   config: classpath:mybatis-config.xml
 
 
