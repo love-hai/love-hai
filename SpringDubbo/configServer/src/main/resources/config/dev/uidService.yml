@@ -7,6 +7,8 @@ zookeeper:
 spring:
   application:
     name: ${appName}
+  profiles:
+    active: dev
   jpa:
     hibernate:
       ddl-auto: update

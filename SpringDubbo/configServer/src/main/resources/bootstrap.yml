@@ -2,13 +2,14 @@ spring:
   application:
     name: config-server  # 应用名称
   profiles:
-    active: dev #激活的环境
+    active: dev # 激活的环境
   cloud:
     config:
       server:
         git:
-          uri: https://github.com/love-hai/LoveSea.git #配置文件所在仓库
-          username: github xiahaifeng2000@gmail.com
-          password: github xhf383818
-          default-label: master #配置文件分支
-          search-paths: SpringDubbo/ConfigService/src/main/resources/config/dev #配置文件路径
+          uri: git@github.com:love-hai/love-hai.git  # 配置文件所在仓库
+#          username: xiahaifeng2000@gmail.com  # GitHub 用户名
+#          password: xhf383818
+          default-label: master  # 配置文件分支
+          search-paths: SpringDubbo/ConfigService/src/main/resources/config/dev  # 配置文件路径
+          private-key: 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  # GitHub Personal Access Token

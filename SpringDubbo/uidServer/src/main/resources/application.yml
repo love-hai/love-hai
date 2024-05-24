@@ -1,8 +1,10 @@
 spring:
   application:
     name: uidServer
+  profiles:
+    active: dev
   config:
-    import: optional:uidServer:http://localhost:8000
+    import: optional:configServer:http://localhost:8000
   cloud:
     config:
       # 使用的分支，覆盖server的默认分支
