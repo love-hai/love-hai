@@ -3,13 +3,70 @@ spring:
     name: config-server  # 应用名称
   profiles:
     active: dev # 激活的环境
+
   cloud:
     config:
       server:
         git:
-          uri: git@github.com:love-hai/love-hai.git  # 配置文件所在仓库
+          uri: git@github.com:love-hai/springDubboConfig.git  # 配置文件所在仓库
+#          uri: https://github.com/love-hai/springDubboConfig.git
+#          ignoreLocalSshSettings: true
+          hostKey: someHostKey
+          hostKeyAlgorithm: ssh-rsa
 #          username: xiahaifeng2000@gmail.com  # GitHub 用户名
 #          password: xhf383818
           default-label: master  # 配置文件分支
-          search-paths: SpringDubbo/ConfigService/src/main/resources/config/dev  # 配置文件路径
-          private-key: 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  # GitHub Personal Access Token
+          clone-on-start: true
+          search-paths: /**  # 配置文件路径
+          private-key: |
+                        -----BEGIN RSA PRIVATE KEY-----
+                        MIIJKAIBAAKCAgEA1a8iJ09nTzg1+GG/P4v4OfcypADq/27UoaOJDtrwuEOsMKP6
+                        tAbRfWe7V6229OQcIwj6tmpI0oL0TmddChqQ3Uf+2inFSSnOQ/1bq7n0vTYCpozC
+                        s2ihw9vRx2dP3e+0UGIOJw7r/K8HNNA+lIL091VkBRcX6XKCWuyTj9dDlv2wKAMq
+                        fd99WaTbKt7CbRNCtKM3aHmMpD7y5iZyLAbEdsujSJEFRPLbc5RcQG98krg09KZT
+                        K/A826P/szdIOXY0wsli5cnlLi1E8BwgYUnXiwJDnflpjnLnWWNUe8stALy1vhaI
+                        HGwI+xDoJ9FAziVGzE+itgRF45rrmN6fk1oF+qy6rJ8hrCuBl+F6kpbRNWu2RLkJ
+                        BfjemeMYWRIDxFufII6kxPG0IloWguA8xlDrwo9dxJLB1Dj9rniotNW/pRf5pAjj
+                        XOGoR2zGrcvJBO66VOIEnHLH5PEj3iRLlgyxOoF2F78A9o1gkTGvxVzEWZfLJkwV
+                        SifLD+/42DthxZXvQYlj5TG/IWeh6xXjxidtw/GGrGKAuHK+g3jtC3lJlC5Fv1IV
+                        6Pvzj19z7hDuMKf6VnT8kdTmMKaBDGnqZ6EZL67sh6OeWwSIOVjb6Jpq6tYGCx0t
+                        u1J6Gd9sPepb1jIA5tFCftM6Q2RRvO9gwCTDzZeIpS3dwcKeM110G0Drie8CAwEA
+                        AQKCAgBEalFeEq86Dv5Aq1MnTnJIZNwi5GRZKiwMIKcGSZUe+hPMcwQW1cQHCcpS
+                        tTzJxas4kGxtMTRlqiX8YF3KmVzebGmtggg3d5oh7KGIJv60AfHxT0obVRnN8riE
+                        xpAst82cmvh7Cu0FtyhwgWg39oHmGsHuW0l9pfsUj4BjYoGye0EGXpUhPggNRpoh
+                        bLcFY1BNM6DO43PjNoBgrdiKPhRzEJoT5tKwE62toMe0nb1d4HqcBhDFFaL2k9iP
+                        kdifBTi5UO9IMU8ebMIQuoCnhZPsXuo1TyC7yhBGb2YiSJf9D26FEQO9Td3GPNCH
+                        xxifqBG14p1u94lE6VobVNP0wrL8zKXFMAGB2D5CqMs5qqVP/1F+xqF0hpw5oVEu
+                        jy69pF3QTmT49DT7XrTLJ3HN7n5hbe5nLkgD5iZk0oRg/xLPSKbUqtxuLcdXCFAU
+                        i0umFBtLCfY2pQCrKbJtMTmons77fSRANMu1jb591UdYn2IRSeBD3Iw2Da31tUa1
+                        BdP0RFXYnMw8BF79upbZQWEWUCCCAEbgfPX5ulYqN5hDrnNc2L535Phrskv4Faym
+                        UntqKF9KSrOA+bfZUiQmv/x9RE0VlhpqJpbJfWjtorswhP+iI+3ZzjVOfM44CckF
+                        x9eAKCSyvG7neaMu+JavY58CJPxI/vZJTt7r1L1T4ecMAVcgKQKCAQEA8wTmFSa8
+                        kBMck700u8BlTDg+iBYkhyVLMyipfO+atYfAxFYAcIFjwKXyYtbNw836ZJmPiee6
+                        C8xCxCgaXh9ZpF8nNbwYfD6eDk3mmjIZH9CG9S8+w/zjLbGopcz2CPcJ2VdouLq3
+                        5Puh3Cz8N6qHHE2IdsGTQBPIStCuVjwuY88mT+GlmBwvngBgQMp04OnoiHtX6bnx
+                        PQ+wpuEnVWuGa3Nh3KOBhc1DSSPE8CTSBO4Tm4Qi1MHd/4SSlrOr5lUt5xeTuZ06
+                        FvZAQk4KQ4KN8xr/V+5tFq9WVh18avzBmOZFu5Lu3078EAaY/kZLmL04/vldVCV3
+                        G5ehrSZt1fXavQKCAQEA4RkZwqRzEan1pezegpCH1yZ/aZFZX3aFC5/Mqd1P4iXo
+                        prph9dJ6CYW4tiSGDBsipzyJsllcp3xeKe2k1QKQcF51PW3xfgCYLtcZzDbmWHF+
+                        tIN4Q8SGx4nLKPvy70WsTkeWVJbowwPQI/mqyzNDkXHPTtqVAG8GTzNJZu85hJky
+                        Cyx4UwuPsJCAFMSzGGNBlCZLrWQUw3bqLMZMB5MBeVXNy1ViMcVMvPYDJZKFcuZb
+                        1f7vKZzvYM3V04QReed/yJaX/AAtEKEA1ug1hVpAXggyI8+UF2bn5LMiKZ+3y1jK
+                        oBQq5AOTBeXzcRFnzDTeatEvBVVWk4otzTT5CwbYGwKCAQBcDs0B0iy3/yViKdhi
+                        Dx3QY7X8YzbvIwd7l7mspC9c+NHjDhkYhUs+XR6WpnxH4i0qEqm3OdrWQUhBeleS
+                        tBmHFKyLxHcaCbZiAMyMONIfpSSamI0UPSXp11TlieDhwIMwm9YFtGWZDmFgQIJC
+                        rAyGgjBhnC6lpVjITojcDewczwnaVMYf+v1mwwmzQX5I/RKjMOY6mb9yvBDVBpGZ
+                        4COJbKnzpNSZ1QnaGPyvY6NTTsSKsuFm6xGni5bkE6fYlwfOdLX3KEIrFJl/BIUK
+                        0dfn8aAstRsJ7t2rvXu2I41K2GAuEBkA6rC9eWJXYFWexH9kxx29lHusLiKGrvoI
+                        hRuZAoIBAQClaCpzyx/7VOb7vGltjAMl6FYsHvCLo630csKT99qhlbW1/rPJTZb7
+                        tFWdEo2mC7KVLXkJo3zgXhVbvhMnq7CzwdVpBIc2Tf2GPe3pEFaHmy6+OvV+5sUb
+                        j3fIcAt+I7aP9y7SjeoQk5a5ONd2Zf86u2TYzuo63VrHjCpeB2A+vcv2RgFNFOvL
+                        lQNpP3lTbGxeDx4BFc/kKle9+yEXV8D3hkOpLN7xL8hJ+oUpcNe7LOdDAwh/jaCh
+                        g9+ihCPLbn+JyI96UC7NT2IsiYn6qe0uq9scUYbDA41XkwKBj6ohNOgAZZF25+F7
+                        rhQLe/zII/lkiL6Crsjltd4eMtTmc2sNAoIBAFMP7xn+VoasaUwdpzxkbOfzoVF7
+                        Rl9EpTlZ0HUjvBGPQegeg6IKOMISLmmRr9Hl6++lXRoR2KvA5iPU7+EHTaio176k
+                        1zaaRWJd6Yu7n8Zs7FVCIRsuxeJbsSsotJiJ7DytseI3zlH9whkZh/yOPSJhqY80
+                        MMlNUnWwg3Tlm+5s3cbiQTZQPYPKP+PKfeXvA5zWQ2v9aRamU6NzrWyBemc7yjED
+                        hHvJDR/ne/qzH1yc/KzyJFId+P7j3fDhyfVaw6dk3aJRv96EvQ+9k30mRkhFIIRV
+                        3iIavm+F5CApywvupz3yvpLaRVC+5sFrIx+tHRBmEcav+cwRHOtBELofsWQ=
+                        -----END RSA PRIVATE KEY-----
