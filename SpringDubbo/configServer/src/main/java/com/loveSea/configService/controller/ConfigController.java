@@ -20,7 +20,12 @@ public class ConfigController {
     @Value("${spring.application.name}")
     private String applicationName;
 
-    @Autowired
-    private Environment environment;
+
+    @GetMapping("/config")
+    public Map<String, Object> getConfig() {
+        return null;
+    }
+
+
 
 }

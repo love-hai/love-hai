@@ -4,12 +4,15 @@ spring:
   profiles:
     active: dev
   config:
-    import: optional:configServer:http://localhost:8000
+    import: optional:configserver:http://localhost:8000/
   cloud:
     config:
+      username: xiahaifeng2000@gmail.com
+      password: xhf383818
       # 使用的分支，覆盖server的默认分支
       label: master
       # 配置文件环境
       profile: dev
       # server地址
-      uri: http://localhost:8000
+      uri: http://localhost:8000/
+      name: uidServer
