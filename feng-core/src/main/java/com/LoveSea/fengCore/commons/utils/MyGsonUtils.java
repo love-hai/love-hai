@@ -99,11 +99,8 @@ public class MyGsonUtils {
      * @author zhiyong.li
      */
     public static <T> List<Map<String, T>> gsonToListMaps(String gsonString) {
-        List<Map<String, T>> list = null;
-        if (gson != null) {
-            list = gson.fromJson(gsonString, new TypeToken<List<Map<String, T>>>() {
-            }.getType());
-        }
+        List<Map<String, T>> list;
+        list = gson.fromJson(gsonString, new TypeToken<List<Map<String, T>>>() {}.getType());
         return list;
     }
 
@@ -117,10 +114,8 @@ public class MyGsonUtils {
      */
     public static <T> Map<String, T> sonToMaps(String gsonString) {
         Map<String, T> map = null;
-        if (gson != null) {
-            map = gson.fromJson(gsonString, new TypeToken<Map<String, T>>() {
-            }.getType());
-        }
+        map = gson.fromJson(gsonString, new TypeToken<Map<String, T>>() {
+        }.getType());
         return map;
     }
 
