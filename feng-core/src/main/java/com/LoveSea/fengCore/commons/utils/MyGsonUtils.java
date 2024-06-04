@@ -25,106 +25,65 @@ import java.util.zip.GZIPOutputStream;
 public class MyGsonUtils {
 
 
-    private static Gson gson = null;
-    private static Gson gson2 = null;
-
-    static {
-        if (gson == null) {
-            gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-        }
-        if (gson2 == null) {
-            gson2 = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").disableHtmlEscaping().create();
-        }
-    }
-
-
-    private MyGsonUtils() {
-    }
+    private static final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+    // 不进行转义
+    private static final Gson gson2 = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").disableHtmlEscaping().create();
 
 
     /**
-     * gsonString: 将object对象转成json字符串 <br/>
-     *
-     * @param object 对象
-     * @return
-     * @author zhiyong.li
+     * MethodName: gsonString <br>
+     * Description: 将object对象转成json字符串<br>
+     * @param object {@link Object}  :
+     * @return {@link String}
+     * @author xiahaifeng
      */
     public static String gsonString(Object object) {
-        String gsonString = null;
-        if (gson != null) {
-            gsonString = gson.toJson(object);
-        }
-        return gsonString;
+        return gson.toJson(object);
     }
 
-
-    /**
-     * MethodName：gsonString2
-     * Description：将对象转换成json字符串，包括特殊字符
-     * @param
-     * @return
-     * @author xi.jie
-     * Date: Create in 2020/5/26 14:29
-     */
     public static String gsonString2(Object object) {
-        String gsonString = null;
-        if (gson2 != null) {
-            gsonString = gson2.toJson(object);
-        }
-        return gsonString;
+        return gson2.toJson(object);
     }
 
     /**
-     * gsonToBean: 将gsonString转成泛型bean <br/>
-     *
-     * @param gsonString json字符串
-     * @param cls        对象
-     * @return
-     * @author zhiyong.li
+     * MethodName: gsonToBean <br>
+     * Description: 将gsonString转成泛型bean<br>
+     * @param gsonString {@link String}    :
+     * @param cls        {@link Class<T>}  :
+     * @return {@link T}
+     * @author xiahaifeng
      */
     public static <T> T gsonToBean(String gsonString, Class<T> cls) {
-        T t = null;
-        if (gson != null) {
-            t = gson.fromJson(gsonString, cls);
-        }
-        return t;
+        return gson.fromJson(gsonString, cls);
     }
 
     public static <T> T jsonObjectToBean(JsonObject jsonObject, Class<T> cls) {
-        T t = null;
-        if (gson != null) {
-            t = gson.fromJson(jsonObject, cls);
-        }
-        return t;
+        return gson.fromJson(jsonObject, cls);
     }
 
     /**
-     * jsonToList: 把json字符串转成list 解决泛型问题 <br/>
-     *
-     * @param json
-     * @param cls
-     * @return
-     * @author zhiyong.li
+     * MethodName: jsonToList <br>
+     * Description: 把json字符串转成list<br>
+     * @param json {@link String}    :
+     * @param cls  {@link Class<T>}  :
+     * @return {@link List<T>}
+     * @author xiahaifeng
      */
     public static <T> List<T> jsonToList(String json, Class<T> cls) {
-        List<T> list = new ArrayList<T>();
         JsonArray array = new JsonParser().parse(json).getAsJsonArray();
-        for (final JsonElement elem : array) {
-            list.add(gson.fromJson(elem, cls));
-        }
-        return list;
+        return jsonArrayToList(array,cls);
     }
 
     /**
-     * MethodName：jsonArrayToList
-     * Description：把jsonArray转成List
-     * @param
-     * @return
-     * @author zhiyong.li
-     * Date: Create in 2018/4/21 17:02
+     * MethodName: jsonArrayToList <br>
+     * Description: 把jsonArray转成List
+     * @param array {@link JsonArray}  :
+     * @param cls   {@link Class<T>}         :
+     * @return {@link List<T>}
+     * @author xiahaifeng
      */
     public static <T> List<T> jsonArrayToList(JsonArray array, Class<T> cls) {
-        List<T> list = new ArrayList<T>();
+        List<T> list = new ArrayList<>();
         for (final JsonElement elem : array) {
             list.add(gson.fromJson(elem, cls));
         }
