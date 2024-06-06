@@ -12,5 +12,4 @@
         <setting name="mapUnderscoreToCamelCase" value="true"/>
         <setting name="callSettersOnNulls" value="true"/>
     </settings>
-
 </configuration>

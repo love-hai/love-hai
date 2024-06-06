@@ -1,18 +1,17 @@
 package com.loveSea.springDubbo.mybatis.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.loveSea.springDubbo.model.enitiy.TbUser;
 import com.loveSea.springDubbo.mybatis.example.TbUserExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface TbUserMapper {
+public interface TbUserMapper extends BaseMapper<TbUser> {
     long countByExample(TbUserExample example);
 
     int deleteByExample(TbUserExample example);
 
     int deleteByPrimaryKey(Long id);
-
-    int insert(TbUser record);
 
     int insertSelective(TbUser record);
 

@@ -5,8 +5,6 @@
 <generatorConfiguration>
     <!--数据库驱动jar -->
     <classPathEntry location="D:/toolsConfig/mysql-connector-java-5.1.38.jar"/>
-
-
     <context id="mysqlTables" targetRuntime="MyBatis3">
         <property name="autoDelimitKeywords" value="true"/>
         <property name="beginningDelimiter" value="`"/>
