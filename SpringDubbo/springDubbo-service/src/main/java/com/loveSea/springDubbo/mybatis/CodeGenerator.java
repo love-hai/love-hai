@@ -17,7 +17,7 @@ public class CodeGenerator {
     static String password = "123456";
 
     static {
-        System.setProperty("user.dir", "springDubbo-service");
+        System.setProperty("user.dir", "springDubbo\\springDubbo-service");
     }
 
     public static void main(String[] args) {
