@@ -26,7 +26,7 @@ public class MyGsonUtils {
     // 不进行转义
     private static final Gson gson2 = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").disableHtmlEscaping().create();
 
-    private static <T> T gsonToT(String gsonString) {
+    private static <T> T gsonToObject(String gsonString) {
         return gson.fromJson(gsonString, new TypeToken<T>() {
         }.getType());
     }
