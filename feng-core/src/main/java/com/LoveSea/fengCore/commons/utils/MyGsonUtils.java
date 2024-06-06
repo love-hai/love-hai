@@ -2,6 +2,7 @@ package com.LoveSea.fengCore.commons.utils;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.ByteArrayInputStream;
@@ -10,18 +11,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-import java.util.Map;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 /**
  * ClassName：MyGsonUtils
- * PackageName：com.lalang.core.utils
  * Description：Gson解析JSON
- *
- * @author zhiyong.li
- * Date：Create in 2018/4/18 9:44
  */
+@Slf4j
 public class MyGsonUtils {
 
 
@@ -29,10 +26,15 @@ public class MyGsonUtils {
     // 不进行转义
     private static final Gson gson2 = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").disableHtmlEscaping().create();
 
+    private static <T> T gsonToT(String gsonString) {
+        return gson.fromJson(gsonString, new TypeToken<T>() {
+        }.getType());
+    }
 
     /**
      * MethodName: gsonString <br>
      * Description: 将object对象转成json字符串<br>
+     *
      * @param object {@link Object}  :
      * @return {@link String}
      * @author xiahaifeng
@@ -48,6 +50,7 @@ public class MyGsonUtils {
     /**
      * MethodName: gsonToBean <br>
      * Description: 将gsonString转成泛型bean<br>
+     *
      * @param gsonString {@link String}    :
      * @param cls        {@link Class<T>}  :
      * @return {@link T}
@@ -64,6 +67,7 @@ public class MyGsonUtils {
     /**
      * MethodName: jsonToList <br>
      * Description: 把json字符串转成list<br>
+     *
      * @param json {@link String}    :
      * @param cls  {@link Class<T>}  :
      * @return {@link List<T>}
@@ -71,12 +75,13 @@ public class MyGsonUtils {
      */
     public static <T> List<T> jsonToList(String json, Class<T> cls) {
         JsonArray array = new JsonParser().parse(json).getAsJsonArray();
-        return jsonArrayToList(array,cls);
+        return jsonArrayToList(array, cls);
     }
 
     /**
      * MethodName: jsonArrayToList <br>
      * Description: 把jsonArray转成List
+     *
      * @param array {@link JsonArray}  :
      * @param cls   {@link Class<T>}         :
      * @return {@link List<T>}
@@ -92,52 +97,21 @@ public class MyGsonUtils {
 
 
     /**
-     * gsonToListMaps: 把json字符串转成list中有map <br/>
-     *
-     * @param gsonString
-     * @return
-     * @author zhiyong.li
-     */
-    public static <T> List<Map<String, T>> gsonToListMaps(String gsonString) {
-        List<Map<String, T>> list;
-        list = gson.fromJson(gsonString, new TypeToken<List<Map<String, T>>>() {}.getType());
-        return list;
-    }
-
-
-    /**
-     * sonToMaps: 把json字符串转成map <br/>
-     *
-     * @param gsonString
-     * @return
-     * @author zhiyong.li
-     */
-    public static <T> Map<String, T> sonToMaps(String gsonString) {
-        Map<String, T> map = null;
-        map = gson.fromJson(gsonString, new TypeToken<Map<String, T>>() {
-        }.getType());
-        return map;
-    }
-
-
-    /**
      * 文本数据gzip压缩
      */
     public static String gzipCompress(String text) {
         if (StringUtils.isEmpty(text)) {
             return null;
         }
-
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         try (GZIPOutputStream gzipOutputStream = new GZIPOutputStream(byteArrayOutputStream)) {
             gzipOutputStream.write(text.getBytes(StandardCharsets.UTF_8));
             gzipOutputStream.flush();
             gzipOutputStream.finish();
         } catch (Exception e) {
-            System.out.println(e);
+            log.error("gzipCompress error", e);
             return null;
         }
-
         return Base64.getEncoder().encodeToString(byteArrayOutputStream.toByteArray());
     }
 
@@ -148,17 +122,16 @@ public class MyGsonUtils {
         if (StringUtils.isEmpty(text)) {
             return null;
         }
-
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(Base64.getDecoder().decode(text));
-        try (GZIPInputStream gzipInputStream = new GZIPInputStream(byteArrayInputStream)){
+        try (GZIPInputStream gzipInputStream = new GZIPInputStream(byteArrayInputStream)) {
             byte[] buffer = new byte[256];
             int len;
             while ((len = gzipInputStream.read(buffer)) != -1) {
                 byteArrayOutputStream.write(buffer, 0, len);
             }
-        }catch (Exception e){
-            System.out.println(e);
+        } catch (Exception e) {
+            log.error("gzipDecompress error", e);
             return null;
         }
         return byteArrayOutputStream.toString();
