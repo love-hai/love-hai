@@ -12,7 +12,7 @@ import java.nio.file.Paths;
  */
 
 public class CodeGenerator {
-    static String url = "jdbc:mysql://localhost:3306/loveSea";
+    static String url = "jdbc:mysql://127.0.0.1:3306/love_sea_base?useUnicode=true&characterEncoding=utf-8&useSSL=false";
     static String username = "root";
     static String password = "123456";
 
@@ -23,10 +23,11 @@ public class CodeGenerator {
     public static void main(String[] args) {
         FastAutoGenerator.create(url, username, password)
                 .globalConfig(builder -> builder.author("xiahaifeng")
-                        .outputDir(Paths.get(System.getProperty("")) + "/src/main/java")
+                        .outputDir(Paths.get(System.getProperty("user.dir")) + "\\src\\main\\java")
                         .commentDate("yyyy-MM-dd"))
-                .packageConfig(builder -> builder.parent("com.baomidou.mybatisplus")
-                        .entity("entity").mapper("mapper")
+                .packageConfig(builder -> builder.parent("com.loveSea.springDubbo")
+                        .entity("entity")
+                        .mapper("mapper")
                         .service("service")
                         .serviceImpl("service.impl")
                         .xml("mapper.xml"))
