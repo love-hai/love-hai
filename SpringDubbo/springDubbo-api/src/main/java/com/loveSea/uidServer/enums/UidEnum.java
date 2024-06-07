@@ -1,4 +1,4 @@
-package com.loveSea.springDubbo.uidServer.enums;
+package com.loveSea.uidServer.enums;
 
 public enum UidEnum {
     LOVE_SEA_TBUSER_ID(1, "love_sea_tbuser_id");
