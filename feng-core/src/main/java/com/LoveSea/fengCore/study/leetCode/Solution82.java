@@ -35,14 +35,24 @@ public class Solution82 {
         ListNode preNode = newHead;
         ListNode curNode = head;
         ListNode dupPreNode = newHead;
+        boolean isDup = false;
         while (null != curNode) {
             if(preNode.val == curNode.val) {
                 curNode = curNode.next;
+                isDup = true;
             }else {
-                dupPreNode.next = curNode;
+                if(isDup) {
+                    dupPreNode.next = curNode;
+                }else {
+                    dupPreNode = preNode;
+                }
                 preNode = curNode;
                 curNode = curNode.next;
+                isDup = false;
             }
+        }
+        if(isDup) {
+            dupPreNode.next = null;
         }
         return newHead.next;
     }
