@@ -23,10 +23,30 @@ import java.util.List;
 public class Solution2861 {
 
     public int maxNumberOfAlloys(int n, int k, int budget, List<List<Integer>> composition, List<Integer> stock, List<Integer> cost) {
-
-
-
-
+        int left = 0,right = 200000000,ans = 0;
+        while (left <= right) {
+            int mid = (left + right) / 2;
+            boolean flag = false;
+            for (int i = 0; i < k; i++) {
+                long sumCost = 0;
+                for (int j = 0; j < n; j++) {
+                    long remaining = (long) composition.get(i).get(j) *mid - stock.get(j);
+                    remaining = Math.max(0, remaining);
+                    sumCost += remaining * cost.get(j);
+                }
+                if(sumCost <= budget) {
+                    flag = true;
+                    break;
+                }
+            }
+            if(flag) {
+                ans = mid;
+                left = mid + 1;
+            }else {
+                right = mid - 1;
+            }
+        }
+        return ans;
     }
 
 
