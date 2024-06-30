@@ -3,6 +3,7 @@ package com.loveSea.uidServer.service;
 /**
  * @author xiahaifeng
  */
+import com.LoveSea.fengCore.retryable.Retryable;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
@@ -35,6 +36,7 @@ public class UidGenerator {
     private final long regionId = 10;
     private final long workerId = 5;
 
+    @Retryable(maxRetries = 3, delay = 1000)
     public long generate(Integer tableId) {
         return this.nextId(tableId);
     }
