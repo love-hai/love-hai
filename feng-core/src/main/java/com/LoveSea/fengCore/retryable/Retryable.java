@@ -2,7 +2,7 @@ package com.LoveSea.fengCore.retryable;
 
 import java.lang.annotation.*;
 
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.SOURCE)
 @Target(ElementType.METHOD)
 @Inherited
 public @interface Retryable {
