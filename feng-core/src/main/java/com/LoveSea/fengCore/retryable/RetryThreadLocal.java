@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Stack;
 
 /**
- * 标志判断一个线程内的方法的是否需要重试
+ * 重试次数记录
  *
  * @author xiahaifeng
  */
@@ -23,24 +23,23 @@ public class RetryThreadLocal {
         return stack;
     }
 
-    public void addRetryCount() {
+    void addRetryCount() {
         getRetryCountRecord().push(getRetryCountRecord().isEmpty() ? 1 : getRetryCountRecord().pop() + 1);
     }
 
-    public void pushRetryCount(Integer retryCount) {
+    void pushRetryCount(Integer retryCount) {
         getRetryCountRecord().push(retryCount);
     }
 
-    public void popRetryCount() {
+    void popRetryCount() {
         getRetryCountRecord().pop();
     }
 
-    public int getRetryCount() {
+    int getRetryCount() {
         return getRetryCountRecord().peek();
     }
 
-    public void remove() {
+    void remove() {
         retryCountRecord.remove();
     }
-
 }

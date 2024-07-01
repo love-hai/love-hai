@@ -11,9 +11,7 @@ import org.aspectj.lang.annotation.Aspect;
 
 @Aspect
 @Slf4j
-
 public class RetryAspect {
-    private RetryThreadLocal retryThreadLocal;
 
     @Around("@annotation(retryable)")
     public Object retry(ProceedingJoinPoint joinPoint, Retryable retryable) throws Throwable {
@@ -24,14 +22,14 @@ public class RetryAspect {
         // 返回结果
         Object result = null;
         // 放入重试次数
-        retryThreadLocal.pushRetryCount(-1);
+        RetryManagementImpl.pushRetryCount(-1);
         int retryCount = -1;
         REException reException;
         try {
             do {
                 reException = null;
                 // 重试次数+1
-                retryThreadLocal.addRetryCount();
+                RetryManagementImpl.addRetryCount();
                 retryCount++;
                 // 执行方法
                 try {
@@ -54,7 +52,7 @@ public class RetryAspect {
             }
         } finally {
             // 弹出重试次数
-            retryThreadLocal.popRetryCount();
+            RetryManagementImpl.popRetryCount();
         }
         return result;
     }

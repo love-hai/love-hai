@@ -1,6 +1,7 @@
 package com.LoveSea.fengCore.retryable;
 
 /**
+ * 重试异常
  * @author xiahaifeng
  */
 

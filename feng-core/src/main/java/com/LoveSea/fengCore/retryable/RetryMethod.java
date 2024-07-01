@@ -9,9 +9,9 @@ import java.util.List;
  */
 @Data
 public class RetryMethod {
-    String methodName;
     String className;
+    String methodName;
+    List<String> parameters;
     int maxRetries;
     long delay;
-    List<String> parameterTypes;
 }

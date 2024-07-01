@@ -7,8 +7,6 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.ExecutableType;
 import javax.lang.model.type.TypeMirror;
-import javax.tools.Diagnostic;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -24,6 +22,7 @@ public class RetryMethodProcessor extends AbstractProcessor {
     public synchronized void init(ProcessingEnvironment processingEnvironment) {
         super.init(processingEnvironment);
         System.out.println("--------------------------processor init---------------------------");
+        RetryManagement.getRetryCount();
 
     }
     @Override
@@ -39,13 +38,6 @@ public class RetryMethodProcessor extends AbstractProcessor {
                 List<? extends TypeMirror> parameterTypes = ((ExecutableType) methodElement.asType()).getParameterTypes();
                 // 获取方法注解
                 Retryable retryableAnnotation = methodElement.getAnnotation(Retryable.class);
-                RetryMethod retryMethod = new RetryMethod();
-                retryMethod.setClassName(className);
-                retryMethod.setMethodName(methodName);
-                retryMethod.setMaxRetries(retryableAnnotation.maxRetries());
-                retryMethod.setDelay(retryableAnnotation.delay());
-                List<String> parameterClass = parameterTypes.stream().map(TypeMirror::toString).toList();
-                retryMethod.setParameterTypes(parameterClass);
             }
         }
         return true;

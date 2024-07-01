@@ -2,6 +2,10 @@ package com.LoveSea.fengCore.retryable;
 
 import java.lang.annotation.*;
 
+/**
+ * 重试注解
+ */
+
 @Retention(RetentionPolicy.SOURCE)
 @Target(ElementType.METHOD)
 @Inherited
