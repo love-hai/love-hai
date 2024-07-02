@@ -12,6 +12,7 @@
     <artifactId>uidServer</artifactId>
     <version>1.0-SNAPSHOT</version>
     <properties>
+        <project.artifactId>uidServer</project.artifactId>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -93,22 +94,51 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
+<!--    主清单-->
+
     <build>
+        <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.2.1</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>retryMethod</id>
-                        <phase>process-classes</phase> <!-- 在编译完成后执行 -->
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
                         <goals>
-                            <goal>java</goal>
+                            <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
-                            <mainClass>com.LoveSea.fengCore.retryable.RetryMethodModifier</mainClass> <!-- 替换为你的类名 -->
+                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                            <mainClass>com.loveSea.uidServer.UidServerApplication</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>com.LoveSea</groupId>
+                <artifactId>feng-core</artifactId>
+                <version>1.0-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>retry-compile</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>

@@ -5,26 +5,30 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.ExecutableType;
 import javax.lang.model.type.TypeMirror;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 /**
  * 重试方法处理器
+ *
  * @author xiahaifeng
  */
 
 @SupportedAnnotationTypes("com.LoveSea.fengCore.retryable.Retryable")
 @SupportedSourceVersion(SourceVersion.RELEASE_17)
 public class RetryMethodProcessor extends AbstractProcessor {
+    public static final List<RetryMethod> retryMethods = new ArrayList<>();
+
     @Override
     public synchronized void init(ProcessingEnvironment processingEnvironment) {
         super.init(processingEnvironment);
         System.out.println("--------------------------processor init---------------------------");
-        RetryManagement.getRetryCount();
-
     }
+
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         for (Element element : roundEnv.getElementsAnnotatedWith(Retryable.class)) {
@@ -35,9 +39,27 @@ public class RetryMethodProcessor extends AbstractProcessor {
                 TypeElement classElement = (TypeElement) methodElement.getEnclosingElement();
                 String className = classElement.getQualifiedName().toString();
                 // 获取方法参数
-                List<? extends TypeMirror> parameterTypes = ((ExecutableType) methodElement.asType()).getParameterTypes();
+                List<? extends VariableElement> parameters = methodElement.getParameters();
                 // 获取方法注解
                 Retryable retryableAnnotation = methodElement.getAnnotation(Retryable.class);
+                int maxRetries = retryableAnnotation.maxRetries();
+                long delay = retryableAnnotation.delay();
+                try {
+                    RetryMethod retryMethod = new RetryMethod();
+                    retryMethod.setMaxRetries(maxRetries);
+                    retryMethod.setDelay(delay);
+                    retryMethod.setClassName(className);
+                    retryMethod.setMethodName(methodName);
+                    List<String> parameterTypes = new ArrayList<>();
+                    for (VariableElement parameter : parameters) {
+                        TypeMirror typeMirror = parameter.asType();
+                        parameterTypes.add(typeMirror.toString());
+                    }
+                    retryMethod.setParameters(parameterTypes);
+                    retryMethods.add(retryMethod);
+                } catch (Exception e) {
+                    System.out.println("重试方法处理器异常");
+                }
             }
         }
         return true;
