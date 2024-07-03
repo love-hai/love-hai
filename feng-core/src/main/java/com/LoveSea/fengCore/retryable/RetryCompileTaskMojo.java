@@ -41,8 +41,10 @@ public class RetryCompileTaskMojo extends AbstractMojo {
                 // 读取并反序列化 XML 文件
                 RetryMethodsWrapper wrapper = (RetryMethodsWrapper) unmarshaller.unmarshal(xmlFile);
                 List<RetryMethod> retryMethods = wrapper.getRetryMethods();
-                RetryMethodModifier retryMethodModifier = new RetryMethodModifier(outputDirectoryPath);
-                retryMethodModifier.modifyMethod(retryMethods);
+//                RetryMethodModifier retryMethodModifier = new RetryMethodModifier(outputDirectoryPath,project);
+//                retryMethodModifier.modifyMethod(retryMethods);
+                RetryMethodAsmModifier retryMethodAsmModifier = new RetryMethodAsmModifier(outputDirectoryPath);
+                retryMethodAsmModifier.modifyMethod(retryMethods);
             } else {
                 getLog().warn("File META-INF/retryMethods.xml does not exist.");
             }

@@ -1,10 +1,12 @@
 package com.LoveSea.fengCore.retryable;
 
 import javassist.*;
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
+import org.apache.maven.model.Dependency;
+import org.apache.maven.model.DependencyManagement;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.project.MavenProject;
 
-import java.io.File;
-import java.net.URL;
-import java.security.CodeSource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,8 +26,8 @@ public class RetryMethodModifier {
                     int attempts = 0;
                     com.LoveSea.fengCore.retryable.REException reException = null;
                     do {
+                        attempts++;
                         try {
-                            attempts++;
                             com.LoveSea.fengCore.retryable.RetryManagementImpl.addRetryCount();
                             %s;
                         } catch (com.LoveSea.fengCore.retryable.REException e) {
@@ -51,11 +53,27 @@ public class RetryMethodModifier {
     ClassPool pool;
     String outputDirectory;
 
+    MavenProject project;
 
-    public RetryMethodModifier(String classPath) throws NotFoundException {
+
+    public RetryMethodModifier(String classPath, MavenProject project) throws NotFoundException, MojoExecutionException {
+        this.project = project;
         pool = ClassPool.getDefault();
         pool.appendClassPath(classPath);
-        outputDirectory = classPath + "target/classes";
+        // 添加项目依赖的类路径到 ClassPool
+        try {
+            List<String> classpathElements = project.getCompileClasspathElements();
+            System.out.println(classpathElements);
+            DependencyManagement dependencyManagement = project.getDependencyManagement();
+            List<Dependency> dependencies = dependencyManagement.getDependencies();
+            for (Dependency dependency : dependencies) {
+//                pool.appendClassPath(classpathElement.getSystemPath());
+                System.out.println(dependency.toString());
+            }
+        } catch (Exception e) {
+            throw new MojoExecutionException("Error resolving project dependencies", e);
+        }
+        outputDirectory = classPath;
     }
 
     public void modifyMethod(List<RetryMethod> retryMethods) throws Exception {
