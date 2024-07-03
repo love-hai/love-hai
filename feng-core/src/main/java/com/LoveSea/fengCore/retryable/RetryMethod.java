@@ -11,13 +11,49 @@ import java.util.List;
 
 
 @XmlRootElement(name = "retryMethod")
-@XmlType(propOrder = {"className", "methodName", "maxRetries", "delay", "parameters"})
+@XmlType(propOrder = {"className", "methodName", "maxRetries", "delay", "paramTypes"})
 public class RetryMethod {
+
+
+    public static class ParamType {
+        private String type;
+        private String name;
+        private String annotation;
+        @XmlElement
+        public String getType() {
+            return type;
+        }
+        public void setType(String type) {
+            this.type = type;
+        }
+        @XmlElement
+        public String getName() {
+            return name;
+        }
+        public void setName(String name) {
+            this.name = name;
+        }
+        @XmlElement
+        public String getAnnotation() {
+            return annotation;
+        }
+        public void setAnnotation(String annotation) {
+            this.annotation = annotation;
+        }
+    }
     private String className;
     private String methodName;
     private int maxRetries;
     private long delay;
-    private List<String> parameters;
+    private List<ParamType> paramTypes;
+
+    private String returnType;
+
+    private String accessModifier = "default";
+
+    private List<String> otherModifiers;
+
+    private List<String> annotations;
 
     @XmlElement
     public String getClassName() {
@@ -56,12 +92,44 @@ public class RetryMethod {
     }
 
     @XmlElement
-    public List<String> getParameters() {
-        return parameters;
+    public List<ParamType> getParamTypes() {
+        return paramTypes;
     }
 
-    public void setParameters(List<String> parameters) {
-        this.parameters = parameters;
+    public void setParamTypes(List<ParamType> paramTypes) {
+        this.paramTypes = paramTypes;
+    }
+
+    @XmlElement
+    public String getReturnType() {
+        return returnType;
+    }
+    public void setReturnType(String returnType) {
+        this.returnType = returnType;
+    }
+
+    @XmlElement
+    public String getAccessModifier() {
+        return accessModifier;
+    }
+    public void setAccessModifier(String accessModifier) {
+        this.accessModifier = accessModifier;
+    }
+
+    @XmlElement
+    public List<String> getOtherModifiers() {
+        return otherModifiers;
+    }
+    public void setOtherModifiers(List<String> otherModifiers) {
+        this.otherModifiers = otherModifiers;
+    }
+
+    @XmlElement
+    public List<String> getAnnotations() {
+        return annotations;
+    }
+    public void setAnnotations(List<String> annotations) {
+        this.annotations = annotations;
     }
 }
 

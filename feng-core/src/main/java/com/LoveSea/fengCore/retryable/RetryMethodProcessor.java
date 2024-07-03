@@ -6,7 +6,6 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.ExecutableType;
 import javax.lang.model.type.TypeMirror;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +54,6 @@ public class RetryMethodProcessor extends AbstractProcessor {
                         TypeMirror typeMirror = parameter.asType();
                         parameterTypes.add(typeMirror.toString());
                     }
-                    retryMethod.setParameters(parameterTypes);
                     retryMethods.add(retryMethod);
                 } catch (Exception e) {
                     System.out.println("重试方法处理器异常");

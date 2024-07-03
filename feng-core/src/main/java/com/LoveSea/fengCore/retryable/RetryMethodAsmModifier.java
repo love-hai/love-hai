@@ -1,11 +1,9 @@
 package com.LoveSea.fengCore.retryable;
 
-import javassist.CtClass;
 import lombok.extern.slf4j.Slf4j;
 import org.objectweb.asm.*;
 import org.objectweb.asm.commons.AdviceAdapter;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -80,8 +78,8 @@ public class RetryMethodAsmModifier {
                     for (RetryMethod retryMethod : methods) {
                         if (name.equals(retryMethod.getMethodName())) {
                             // 检查参数是否一样
-                            for (String parameter : retryMethod.getParameters()) {
-                            }
+//                            for (String parameter : retryMethod.getParamTypes()) {
+//                            }
                             String originalMethodName = "original_" + name;
                             // 重命名原方法
                             methodVisitor = new AdviceAdapter(Opcodes.ASM9, methodVisitor, access, name, descriptor) {
@@ -99,15 +97,16 @@ public class RetryMethodAsmModifier {
                 public void visitEnd() {
                     for (RetryMethod retryMethod : retryMethodMap.get(className)) {
                         String originalMethodName = "original_" + retryMethod.getMethodName();
-                        String newMethodBody = String.format(RetryMethodBody,
-                                String.format(originalMethodName, getMethodParams(retryMethod.getParameters())),
-                                retryMethod.getDelay(),
-                                retryMethod.getMaxRetries());
+//                        String newMethodBody = String.format(RetryMethodBody,
+//                                String.format("%s(%s)", originalMethodName, getMethodParams(retryMethod.getParamTypes())),
+//                                retryMethod.getDelay(),
+//                                retryMethod.getMaxRetries());
+
                         // 创建新的方法，包含重试逻辑
                         MethodVisitor mv = cv.visitMethod(Opcodes.ACC_PUBLIC, retryMethod.getMethodName(), getMethodDescriptor(retryMethod), null, null);
                         mv.visitCode();
                         // 将 newMethodBody 插入到新方法中
-                        insertMethodBody(mv, newMethodBody);
+//                        insertMethodBody(mv, newMethodBody);
                         mv.visitMaxs(0, 0);
                         mv.visitEnd();
                     }

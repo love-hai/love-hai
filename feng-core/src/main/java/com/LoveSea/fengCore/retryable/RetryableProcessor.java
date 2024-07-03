@@ -8,14 +8,10 @@ import javax.lang.model.element.*;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
-import javax.tools.Diagnostic;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +45,6 @@ public class RetryableProcessor extends AbstractProcessor {
             if (element.getKind() != ElementKind.METHOD) {
                 continue;
             }
-
             ExecutableElement methodElement = (ExecutableElement) element;
             Retryable retryable = methodElement.getAnnotation(Retryable.class);
             int maxRetries = retryable.maxRetries();
@@ -59,19 +54,27 @@ public class RetryableProcessor extends AbstractProcessor {
             String className = elementUtils.getBinaryName(classElement).toString();
             String methodName = methodElement.getSimpleName().toString();
             List<? extends VariableElement> parameters = methodElement.getParameters();
+            TypeMirror returnType = methodElement.getReturnType();
+            Set<Modifier> modifiers = methodElement.getModifiers();
+            // 得到这个方法的注解
+            List<? extends AnnotationMirror> annotationMirrors = methodElement.getAnnotationMirrors();
 
             RetryMethod retryMethod = new RetryMethod();
             retryMethod.setMaxRetries(maxRetries);
             retryMethod.setDelay(delay);
             retryMethod.setClassName(className);
             retryMethod.setMethodName(methodName);
-
-            List<String> parameterTypes = new ArrayList<>();
+            List<RetryMethod.ParamType> paramTypes = new ArrayList<>();
             for (VariableElement parameter : parameters) {
+                RetryMethod.ParamType paramType = new RetryMethod.ParamType();
                 TypeMirror typeMirror = parameter.asType();
-                parameterTypes.add(typeMirror.toString());
+                paramType.setType(typeMirror.toString());
+                paramType.setName(parameter.getSimpleName().toString());
+                paramTypes.add(paramType);
             }
-            retryMethod.setParameters(parameterTypes);
+            retryMethod.setParamTypes(paramTypes);
+            retryMethod.setReturnType(returnType.toString());
+
 
             retryMethods.add(retryMethod);
         }

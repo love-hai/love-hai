@@ -5,6 +5,7 @@ import com.loveSea.uidServer.enums.UidEnum;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  * @author xiahaifeng
@@ -16,7 +17,8 @@ public class IdServiceImpl implements IdService {
     private UidGenerator uidGenerator;
     @Override
     @Retryable(maxRetries = 3, delay = 1000)
-    public Long getId(UidEnum uidEnum) {
-        return uidGenerator.generate(uidEnum.getCode(),null,null,null);
+    @GetMapping
+    public final Long getId(UidEnum uidEnum11) {
+        return uidGenerator.generate(uidEnum11.getCode(),null,null,null);
     }
 }

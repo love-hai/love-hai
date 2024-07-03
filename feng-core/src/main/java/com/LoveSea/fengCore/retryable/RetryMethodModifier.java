@@ -1,7 +1,6 @@
 package com.LoveSea.fengCore.retryable;
 
 import javassist.*;
-import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.DependencyManagement;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -129,8 +128,8 @@ public class RetryMethodModifier {
 
 
     public void modifyMethod(CtClass ctClass, RetryMethod retryMethod) throws Exception {
-        modifyMethod(ctClass, retryMethod.getClassName(), retryMethod.getMethodName(), retryMethod.getParameters(), retryMethod.getMaxRetries(),
-                retryMethod.getDelay());
+//        modifyMethod(ctClass, retryMethod.getClassName(), retryMethod.getMethodName(), retryMethod.getParamTypes(), retryMethod.getMaxRetries(),
+//                retryMethod.getDelay());
     }
 
     public void modifyMethod(CtClass ctClass, String className, String methodName, List<String> parameters, int maxRetries, long delay) throws Exception {
