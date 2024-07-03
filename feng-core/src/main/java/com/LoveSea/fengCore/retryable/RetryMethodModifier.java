@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  *
  * @author xiahaifeng
  */
-
+@Deprecated
 public class RetryMethodModifier {
     static String RetryMethodBody = """
             {

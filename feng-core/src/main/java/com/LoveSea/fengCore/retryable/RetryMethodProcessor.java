@@ -17,7 +17,7 @@ import java.util.Set;
  *
  * @author xiahaifeng
  */
-
+@Deprecated
 @SupportedAnnotationTypes("com.LoveSea.fengCore.retryable.Retryable")
 @SupportedSourceVersion(SourceVersion.RELEASE_17)
 public class RetryMethodProcessor extends AbstractProcessor {
