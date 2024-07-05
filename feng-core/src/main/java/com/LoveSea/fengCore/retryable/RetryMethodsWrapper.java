@@ -5,6 +5,8 @@ package com.LoveSea.fengCore.retryable;
  */
 
 
+import com.LoveSea.fengCore.retryable.xml.RetryMethod;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;

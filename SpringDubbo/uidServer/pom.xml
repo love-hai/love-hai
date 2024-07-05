@@ -12,23 +12,23 @@
     <artifactId>uidServer</artifactId>
     <version>1.0-SNAPSHOT</version>
     <properties>
-        <project.artifactId>uidServer</project.artifactId>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
+        <!-- 本地依赖       -->
         <dependency>
             <groupId>com.loveSea</groupId>
             <artifactId>springDubbo-api</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-config</artifactId>
-            <version>3.1.9</version>
+            <groupId>com.LoveSea</groupId>
+            <artifactId>feng-core</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
+
         <!--slf4j-->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -88,48 +88,19 @@
             <artifactId>zookeeper</artifactId>
             <version>3.9.2</version>
         </dependency>
-        <dependency>
-            <groupId>com.LoveSea</groupId>
-            <artifactId>feng-core</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
     </dependencies>
 <!--    主清单-->
 
     <build>
-        <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-dependencies</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.2.0</version>
+                <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.loveSea.uidServer.UidServerApplication</mainClass>
-                        </manifest>
-                    </archive>
+                    <source>17</source>
+                    <target>17</target>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>com.LoveSea</groupId>
                 <artifactId>feng-core</artifactId>

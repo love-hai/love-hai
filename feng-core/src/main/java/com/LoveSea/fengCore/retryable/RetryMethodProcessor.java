@@ -1,5 +1,7 @@
 package com.LoveSea.fengCore.retryable;
 
+import com.LoveSea.fengCore.retryable.xml.RetryMethod;
+
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;

@@ -1,9 +1,10 @@
-package com.LoveSea.fengCore.retryable;
+package com.LoveSea.fengCore.retryable.xml;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author xiahaifeng
@@ -11,36 +12,10 @@ import java.util.List;
 
 
 @XmlRootElement(name = "retryMethod")
-@XmlType(propOrder = {"className", "methodName", "maxRetries", "delay", "paramTypes"})
+@XmlType(propOrder = {"className", "methodName", "maxRetries", "delay", "paramTypes", "returnType", "accessModifier", "otherModifiers", "annotations"})
 public class RetryMethod {
+    public static Set<String> accessModifierSet = Set.of("public", "protected", "private", "default");
 
-
-    public static class ParamType {
-        private String type;
-        private String name;
-        private String annotation;
-        @XmlElement
-        public String getType() {
-            return type;
-        }
-        public void setType(String type) {
-            this.type = type;
-        }
-        @XmlElement
-        public String getName() {
-            return name;
-        }
-        public void setName(String name) {
-            this.name = name;
-        }
-        @XmlElement
-        public String getAnnotation() {
-            return annotation;
-        }
-        public void setAnnotation(String annotation) {
-            this.annotation = annotation;
-        }
-    }
     private String className;
     private String methodName;
     private int maxRetries;
@@ -51,11 +26,11 @@ public class RetryMethod {
 
     private String accessModifier = "default";
 
-    private List<String> otherModifiers;
+    private Set<String> otherModifiers;
 
-    private List<String> annotations;
+    private List<Annotation> annotations;
 
-    @XmlElement
+    @XmlElement(name = "className")
     public String getClassName() {
         return className;
     }
@@ -64,7 +39,7 @@ public class RetryMethod {
         this.className = className;
     }
 
-    @XmlElement
+    @XmlElement(name = "methodName")
     public String getMethodName() {
         return methodName;
     }
@@ -73,7 +48,7 @@ public class RetryMethod {
         this.methodName = methodName;
     }
 
-    @XmlElement
+    @XmlElement(name = "maxRetries")
     public int getMaxRetries() {
         return maxRetries;
     }
@@ -82,7 +57,7 @@ public class RetryMethod {
         this.maxRetries = maxRetries;
     }
 
-    @XmlElement
+    @XmlElement(name = "delay")
     public long getDelay() {
         return delay;
     }
@@ -91,7 +66,7 @@ public class RetryMethod {
         this.delay = delay;
     }
 
-    @XmlElement
+    @XmlElement(name = "paramType")
     public List<ParamType> getParamTypes() {
         return paramTypes;
     }
@@ -100,35 +75,39 @@ public class RetryMethod {
         this.paramTypes = paramTypes;
     }
 
-    @XmlElement
+    @XmlElement(name = "returnType")
     public String getReturnType() {
         return returnType;
     }
+
     public void setReturnType(String returnType) {
         this.returnType = returnType;
     }
 
-    @XmlElement
+    @XmlElement(name = "accessModifier")
     public String getAccessModifier() {
         return accessModifier;
     }
+
     public void setAccessModifier(String accessModifier) {
         this.accessModifier = accessModifier;
     }
 
-    @XmlElement
-    public List<String> getOtherModifiers() {
+    @XmlElement(name = "otherModifier")
+    public Set<String> getOtherModifiers() {
         return otherModifiers;
     }
-    public void setOtherModifiers(List<String> otherModifiers) {
+
+    public void setOtherModifiers(Set<String> otherModifiers) {
         this.otherModifiers = otherModifiers;
     }
 
-    @XmlElement
-    public List<String> getAnnotations() {
+    @XmlElement(name = "annotation")
+    public List<Annotation> getAnnotations() {
         return annotations;
     }
-    public void setAnnotations(List<String> annotations) {
+
+    public void setAnnotations(List<Annotation> annotations) {
         this.annotations = annotations;
     }
 }

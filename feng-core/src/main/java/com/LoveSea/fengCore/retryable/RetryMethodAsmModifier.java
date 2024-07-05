@@ -1,5 +1,6 @@
 package com.LoveSea.fengCore.retryable;
 
+import com.LoveSea.fengCore.retryable.xml.RetryMethod;
 import lombok.extern.slf4j.Slf4j;
 import org.objectweb.asm.*;
 import org.objectweb.asm.commons.AdviceAdapter;

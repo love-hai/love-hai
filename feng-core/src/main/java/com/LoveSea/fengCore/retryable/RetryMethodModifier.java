@@ -1,5 +1,6 @@
 package com.LoveSea.fengCore.retryable;
 
+import com.LoveSea.fengCore.retryable.xml.RetryMethod;
 import javassist.*;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.DependencyManagement;
