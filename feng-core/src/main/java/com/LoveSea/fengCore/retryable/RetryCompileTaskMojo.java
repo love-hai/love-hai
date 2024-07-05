@@ -1,6 +1,7 @@
 package com.LoveSea.fengCore.retryable;
 
 
+import com.LoveSea.fengCore.retryable.modifier.RetryMethodAsmModifier;
 import com.LoveSea.fengCore.retryable.xml.RetryMethod;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -44,8 +45,8 @@ public class RetryCompileTaskMojo extends AbstractMojo {
                 List<RetryMethod> retryMethods = wrapper.getRetryMethods();
 //                RetryMethodModifier retryMethodModifier = new RetryMethodModifier(outputDirectoryPath,project);
 //                retryMethodModifier.modifyMethod(retryMethods);
-//                RetryMethodAsmModifier retryMethodAsmModifier = new RetryMethodAsmModifier(outputDirectoryPath);
-//                retryMethodAsmModifier.modifyMethod(retryMethods);
+                RetryMethodAsmModifier retryMethodAsmModifier = new RetryMethodAsmModifier(outputDirectoryPath);
+                retryMethodAsmModifier.modifyMethod(retryMethods);
             } else {
                 getLog().warn("File META-INF/retryMethods.xml does not exist.");
             }

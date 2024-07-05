@@ -1,4 +1,4 @@
-package com.LoveSea.fengCore.retryable;
+package com.LoveSea.fengCore.retryable.modifier;
 
 import com.LoveSea.fengCore.retryable.xml.RetryMethod;
 import lombok.extern.slf4j.Slf4j;
@@ -143,6 +143,37 @@ public class RetryMethodAsmModifier {
         // 根据 RetryMethod 的参数和返回值生成方法描述符
         // 示例代码，实际实现需要根据具体情况生成描述符
         return "(I)J";  // 假设方法接收一个 int 参数，返回一个 long 值
+    }
+
+    String getDescriptor(RetryMethod retryMethod) {
+        return "(I)J";
+    }
+    Map<String, String> typeMap = Map.of(
+            "int", "I",
+            "long", "J",
+            "float", "F",
+            "double", "D",
+            "byte", "B",
+            "char", "C",
+            "short", "S",
+            "boolean", "Z",
+            "void", "V"
+    );
+
+    String getTypeDescriptor(String type) {
+        char[] chars = type.toCharArray();
+        StringBuilder result = new StringBuilder();
+        StringBuilder ct = new StringBuilder();
+        for (char c : chars) {
+        }
+        return null;
+    }
+
+    String getClassDescriptor(String className) {
+        if(typeMap.containsKey(className)) {
+            return typeMap.get(className);
+        }
+        return "L" + className.replace(".", "/") + ";";
     }
 
 
