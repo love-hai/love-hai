@@ -36,7 +36,6 @@ public class UidGenerator {
     private final long regionId = 10;
     private final long workerId = 5;
 
-    @Retryable(maxRetries = 3, delay = 1000)
     public long generate(Integer tableId,String aid,String bid,String cid) {
         return this.nextId(tableId);
     }

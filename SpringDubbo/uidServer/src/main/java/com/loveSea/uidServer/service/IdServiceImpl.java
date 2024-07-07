@@ -23,7 +23,7 @@ public class IdServiceImpl implements IdService {
     }
 
     @Retryable
-    public UidEnum getUidEnum(UidEnum code, List<String> ab,String[] aa ,int[][][] bb) {
+    public <T> UidEnum getUidEnum(UidEnum code, List<? super UidEnum> uidEnums, T t) {
         return code;
     }
 }
