@@ -1,4 +1,4 @@
-package org.LoveSea.NettyShow.webSecket;
+package com.loveSea.nettyShow.webSecket;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -14,7 +14,6 @@ import io.netty.util.CharsetUtil;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.logging.Handler;
 import java.util.logging.Logger;
 
 import static io.netty.handler.codec.http.HttpUtil.isKeepAlive;

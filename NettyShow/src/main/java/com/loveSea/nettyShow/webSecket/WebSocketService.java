@@ -1,4 +1,4 @@
-package org.LoveSea.NettyShow.webSecket;
+package com.loveSea.nettyShow.webSecket;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
