@@ -159,13 +159,14 @@ public class RetryMethodAsmModifier {
             "boolean", "Z",
             "void", "V"
     );
-
+    // ? extends 变成+
+    // ? super 变成-
     String getTypeDescriptor(String type) {
-        char[] chars = type.toCharArray();
-        StringBuilder result = new StringBuilder();
-        StringBuilder ct = new StringBuilder();
-        for (char c : chars) {
+        // 检查是不是数组
+        if (type.endsWith("[]")) {
+            return "["+ getTypeDescriptor(type.substring(0, type.length() - 2));
         }
+
         return null;
     }
 
