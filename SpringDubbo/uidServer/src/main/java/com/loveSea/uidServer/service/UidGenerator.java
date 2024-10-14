@@ -3,7 +3,6 @@ package com.loveSea.uidServer.service;
 /**
  * @author xiahaifeng
  */
-import com.LoveSea.fengCore.retryable.Retryable;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;

@@ -23,7 +23,6 @@ import static io.netty.handler.codec.http.HttpUtil.setContentLength;
  * webSocket服务端处理类
  *
  * @author xiahaifeng
- * @since 2024/4/16 14:22
  */
 
 public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> {
@@ -106,7 +105,6 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
      * @param ctx   io.netty.channel.ChannelHandlerContext                 :
      * @param frame io.netty.handler.codec.http.websocketx.WebSocketFrame  :
      * @author xiahaifeng
-     * @since 2024/4/16 14:30
      */
     private void handleWebSocketFrame(ChannelHandlerContext ctx, WebSocketFrame frame) {
         //判断是否是关闭链路的指令

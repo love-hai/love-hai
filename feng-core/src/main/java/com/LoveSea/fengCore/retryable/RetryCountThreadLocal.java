@@ -1,17 +1,19 @@
 package com.LoveSea.fengCore.retryable;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.util.Stack;
 
 /**
- * 重试次数记录
+ * 标志判断一个线程内的方法的是否需要重试
  *
  * @author xiahaifeng
  */
 
 @Slf4j
-public class RetryThreadLocal {
+@Component
+public class RetryCountThreadLocal {
     private final ThreadLocal<Stack<Integer>> retryCountRecord = new ThreadLocal<>();
 
     private Stack<Integer> getRetryCountRecord() {
@@ -23,23 +25,24 @@ public class RetryThreadLocal {
         return stack;
     }
 
-    void addRetryCount() {
+    public void addRetryCount() {
         getRetryCountRecord().push(getRetryCountRecord().isEmpty() ? 1 : getRetryCountRecord().pop() + 1);
     }
 
-    void pushRetryCount(Integer retryCount) {
+    public void pushRetryCount(Integer retryCount) {
         getRetryCountRecord().push(retryCount);
     }
 
-    void popRetryCount() {
+    public void popRetryCount() {
         getRetryCountRecord().pop();
     }
 
-    int getRetryCount() {
-        return getRetryCountRecord().peek();
+    public int getRetryCount() {
+        Stack<Integer> stack = getRetryCountRecord();
+        return stack.isEmpty() ? 0 : stack.peek();
     }
 
-    void remove() {
+    public void remove() {
         retryCountRecord.remove();
     }
 }
