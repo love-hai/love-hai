@@ -36,7 +36,6 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
             res.content().writeBytes(buf);
             buf.release();
             setContentLength(res, res.content().readableBytes());
-
         }
         //如果是非Keep-Alive，关闭连接
         ChannelFuture f = ctx.channel().writeAndFlush(res);
