@@ -38,7 +38,6 @@ public class AvlTree {
         }catch (Exception e){
             log.error("添加失败 data:{}",data,e);
         }
-
     }
 
     void add(AvlTreeNode addNode) {
