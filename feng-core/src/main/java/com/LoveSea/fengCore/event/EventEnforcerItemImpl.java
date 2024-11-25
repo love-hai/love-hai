@@ -6,13 +6,15 @@ import com.LoveSea.fengCore.event.api.EventListener;
  * @author xiahaifeng
  */
 
-public class EventEnforcerImpl<T> implements EventEnforcer<T> {
+public class EventEnforcerItemImpl<T> implements EventEnforcerItem<T> {
+    private final Class<T> eventClazz;
     private final EventDriven eventDriven;
     private final EventListener<T> eventListener;
 
-    public EventEnforcerImpl(EventListener<T> eventListener) {
+    public EventEnforcerItemImpl(Class<T> clazz, EventListener<T> eventListener) {
+        this.eventClazz = clazz;
         this.eventListener = eventListener;
-        eventDriven = EventDriven.of();
+        this.eventDriven = EventDriven.of();
     }
 
     @Override
@@ -29,5 +31,10 @@ public class EventEnforcerImpl<T> implements EventEnforcer<T> {
         if (isEnforced()) {
             eventListener.run(var1);
         }
+    }
+
+    @Override
+    public Class<?> getEventClazz() {
+        return eventClazz;
     }
 }
