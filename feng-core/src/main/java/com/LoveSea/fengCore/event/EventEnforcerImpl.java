@@ -1,5 +1,7 @@
 package com.LoveSea.fengCore.event;
 
+import com.LoveSea.fengCore.event.api.EventListener;
+
 /**
  * @author xiahaifeng
  */
