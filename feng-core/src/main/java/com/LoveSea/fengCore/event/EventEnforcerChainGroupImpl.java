@@ -26,6 +26,7 @@ public class EventEnforcerChainGroupImpl<T extends Event> implements EventEnforc
         return eventEnforcer.toThis(eventClass).orElse(null);
     }
 
+
     private <E extends T> EventDriven addOrCreate(Class<E> eventClass, EventListener<E> listener) {
         try {
             lock.lock();
@@ -35,22 +36,31 @@ public class EventEnforcerChainGroupImpl<T extends Event> implements EventEnforc
                 this.eventEnforcerMap.put(eventClass, eventEnforcerItem);
                 return eventEnforcerItem.eventDriven();
             }
+            final String eventClazzNoMatchMessage = "need %s; but eventClazz is %s";
             if (eventEnforcer instanceof EventEnforcerChain) {
                 EventEnforcerChain<E> oldEventEnforcerChain = eventEnforcer.toChain(eventClass).orElse(null);
                 if (null == oldEventEnforcerChain) {
-                    throw new IllegalStateException("need " + eventClass + "; but eventEnforcerChain eventClazz is " + eventEnforcer.getEventClazz());
+                    String message = eventClazzNoMatchMessage.formatted(eventClass, eventEnforcer.getEventClazz());
+                    throw new IllegalStateException(message);
                 }
-                return oldEventEnforcerChain.add(eventEnforcerItem);
+                if (oldEventEnforcerChain.add(eventEnforcerItem)) {
+                    return eventEnforcerItem.eventDriven();
+                } else {
+                    throw new IllegalStateException("add eventEnforcerItem failed");
+                }
             }
             if (eventEnforcer instanceof EventEnforcerItem) {
                 EventEnforcerItem<E> oldEventEnforcerItem = eventEnforcer.toItem(eventClass).orElse(null);
                 if (null == oldEventEnforcerItem) {
-                    throw new IllegalStateException("need " + eventClass + "; but eventEnforcerItem eventClazz is " + eventEnforcer.getEventClazz());
+                    String message = eventClazzNoMatchMessage.formatted(eventClass, eventEnforcer.getEventClazz());
+                    throw new IllegalStateException(message);
                 }
                 EventEnforcerChain<E> eventEnforcerChain = EventEnforcer.of(eventClass);
-                eventEnforcerChain.add(oldEventEnforcerItem);
+                if (!eventEnforcerChain.add(oldEventEnforcerItem) || !eventEnforcerChain.add(eventEnforcerItem)) {
+                    throw new IllegalStateException("add old and new eventEnforcerItem failed");
+                }
                 eventEnforcerMap.put(eventClass, eventEnforcerChain);
-                return eventEnforcerChain.add(eventEnforcerItem);
+                return eventEnforcerItem.eventDriven();
             }
             throw new IllegalStateException("unknown eventEnforcer type " + eventEnforcer.getClass());
         } finally {

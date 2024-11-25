@@ -10,5 +10,5 @@ import java.util.Optional;
  */
 
 public interface EventEnforcerChain<T>  extends EventEnforcer<T> {
-    EventDriven add(EventEnforcerItem<T> eventEnforcerItem);
+    boolean add(EventEnforcerItem<T> eventEnforcerItem);
 }

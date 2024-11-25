@@ -1,10 +1,8 @@
 package com.LoveSea.fengCore.event;
 
 import com.LoveSea.fengCore.event.api.Event;
-import com.LoveSea.fengCore.event.api.EventListener;
 
 import java.util.LinkedList;
-import java.util.Optional;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -27,11 +25,10 @@ public class EventEnforcerChainImpl<T extends Event> implements EventEnforcerCha
     }
 
     @Override
-    public EventDriven add(EventEnforcerItem<T> eventEnforcerItem) {
+    public boolean add(EventEnforcerItem<T> eventEnforcerItem) {
         try {
             lock.lock();
-            listeners.add(eventEnforcerItem);
-            return eventEnforcerItem.eventDriven();
+            return listeners.add(eventEnforcerItem);
         } finally {
             lock.unlock();
         }
@@ -41,8 +38,8 @@ public class EventEnforcerChainImpl<T extends Event> implements EventEnforcerCha
     public void dispatch(T var1) {
         try {
             lock.lock();
-            for (EventEnforcer<T> listener : listeners) {
-                listener.dispatch(var1);
+            for (EventEnforcer<T> eventEnforcer : listeners) {
+                eventEnforcer.dispatch(var1);
             }
         } finally {
             lock.unlock();
