@@ -14,14 +14,15 @@ import java.util.concurrent.locks.ReentrantLock;
 public class EventEnforcerChainGroupImpl<T extends Event> implements EventEnforcerChainGroup<T> {
     private final Map<Class<? extends T>, EventEnforcer<?>> eventEnforcerMap = new ConcurrentHashMap<>();
     private final ReentrantLock lock = new ReentrantLock();
-
+    final String eventClazzNoMatchMessage = "need %s; but eventClazz is %s";
     private <E extends T> EventEnforcer<E> get(Class<E> eventClass) {
         EventEnforcer<?> eventEnforcer = eventEnforcerMap.get(eventClass);
         if (null == eventEnforcer) {
             return null;
         }
         if (eventClass != eventEnforcer.getEventClazz()) {
-            return null;
+            String message = eventClazzNoMatchMessage.formatted(eventClass, eventEnforcer.getEventClazz());
+            throw new IllegalStateException(message);
         }
         return eventEnforcer.toThis(eventClass).orElse(null);
     }
@@ -36,7 +37,7 @@ public class EventEnforcerChainGroupImpl<T extends Event> implements EventEnforc
                 this.eventEnforcerMap.put(eventClass, eventEnforcerItem);
                 return eventEnforcerItem.eventDriven();
             }
-            final String eventClazzNoMatchMessage = "need %s; but eventClazz is %s";
+
             if (eventEnforcer instanceof EventEnforcerChain) {
                 EventEnforcerChain<E> oldEventEnforcerChain = eventEnforcer.toChain(eventClass).orElse(null);
                 if (null == oldEventEnforcerChain) {
