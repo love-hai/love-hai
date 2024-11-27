@@ -122,11 +122,4 @@ public class ClashToSSrImpl implements ClashToSSr {
         ssrUrlItem.setGroup(group);
         return parseSSTap.parserSSRUrlItem(ssrUrlItem);
     }
-
-    public static void main(String[] args) throws IOException {
-        ClashToSSrImpl clashToSSrImpl = new ClashToSSrImpl();
-        String yamlPath = "https://huahe.link/link/fuQAeyIRcEHjZ3zG?clash=2";
-        String ss = clashToSSrImpl.transform(yamlPath);
-        log.info(ss);
-    }
 }

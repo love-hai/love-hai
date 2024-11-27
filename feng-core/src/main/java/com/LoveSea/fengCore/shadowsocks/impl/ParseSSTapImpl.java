@@ -22,10 +22,6 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 public class ParseSSTapImpl implements ParseSSTap {
-
-    public static void main(String[] args) throws Exception {
-    }
-
     @Override
     public SSRUrlParseRes parseSSrSubLink(String ssrLink) throws Exception {
         // 通过链接下载 node.txt
