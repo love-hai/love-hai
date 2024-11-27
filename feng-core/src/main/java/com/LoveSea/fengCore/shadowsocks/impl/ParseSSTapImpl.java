@@ -5,6 +5,7 @@ import com.LoveSea.fengCore.shadowsocks.ParseSSTap;
 import com.LoveSea.fengCore.shadowsocks.SSRUrlGroup;
 import com.LoveSea.fengCore.shadowsocks.SSRUrlItem;
 import com.LoveSea.fengCore.shadowsocks.SSRUrlParseRes;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
@@ -201,7 +202,7 @@ public class ParseSSTapImpl implements ParseSSTap {
         String node = new String(decode, StandardCharsets.UTF_8);
         // 对node 进行分割
         String[] ssrUrls = node.split("\n");
-        List<String> list = new ArrayList<>(List.of(ssrUrls));
+        List<String> list = Lists.newArrayList(ssrUrls);
         list.removeIf(String::isEmpty);
         return list;
     }
