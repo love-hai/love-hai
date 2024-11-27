@@ -1,6 +1,6 @@
 package com.LoveSea.fengCore.shadowsocks.impl;
 
-import com.LoveSea.fengCore.commons.utils.UrlUtil;
+import com.LoveSea.fengCore.commons.utils.UrlInfo;
 import com.LoveSea.fengCore.shadowsocks.ParseSSTap;
 import com.LoveSea.fengCore.shadowsocks.SSRUrlGroup;
 import com.LoveSea.fengCore.shadowsocks.SSRUrlItem;
@@ -103,14 +103,15 @@ public class ParseSSTapImpl implements ParseSSTap {
             String obfs = params[4];    // 混淆
             ssrUrlItem.setObfs(obfs);
             String other = params[5];  // 密码
+            UrlInfo urlInfo = UrlInfo.parse(other);
 
-            Map<String, String> urlParams = UrlUtil.getUrlParams(other);
-            String encodePassword = urlParams.get("server");
+            String encodePassword = urlInfo.getHost();
             if (null != encodePassword) {
                 encodePassword = encodePassword.substring(0, encodePassword.length() - 1);
                 String password = urlBase64Decode(encodePassword);
                 ssrUrlItem.setPassword(password);
             }
+            Map<String, String> urlParams = urlInfo.getParams();
             if (null != urlParams.get("obfsparam")) {
                 String obfsparam = urlBase64Decode(urlParams.get("obfsparam"));
                 ssrUrlItem.setObfsparam(obfsparam);

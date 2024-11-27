@@ -23,22 +23,17 @@ import java.util.Objects;
  */
 @Slf4j
 public class ClashToSSrImpl implements ClashToSSr {
-
     private String group = "clash";
-
-    Yaml yaml;
-    ParseSSTap parseSSTap;
-
+    private final Yaml yaml;
+    private final ParseSSTap parseSSTap;
     public ClashToSSrImpl() {
         this.parseSSTap = new ParseSSTapImpl();
         this.yaml = new Yaml();
     }
-
     public ClashToSSrImpl(String group) {
         this();
         this.group = group;
     }
-
     @Override
     public String transform(File file) throws IOException {
         try (InputStream in = new FileInputStream(file)) {
