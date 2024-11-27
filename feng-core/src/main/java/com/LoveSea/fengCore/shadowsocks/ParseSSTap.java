@@ -22,9 +22,6 @@ import java.util.stream.Collectors;
 public class ParseSSTap {
 
     public static void main(String[] args) throws Exception {
-        ParseSSTap parseSSTap = new ParseSSTap();
-        SSRUrlParseRes ssrUrlParseRes = parseSSTap.parseSSrSubLink("https://huahe.link/link/fuQAeyIRcEHjZ3zG?sub=1&extend=1");
-        log.info(ssrUrlParseRes.toString());
     }
 
     SSRUrlParseRes parseSSrSubLink(String ssrLink) throws Exception {
@@ -128,12 +125,53 @@ public class ParseSSTap {
                 String group = urlBase64Decode(urlParams.get("group"));
                 ssrUrlItem.setGroup(group);
             }
+            String ssrUrlStr = parserSSRUrlItem(ssrUrlItem);
+            if (!ssrUrlStr.contains(ssrUrl)) {
+                log.error("解析失败，解析前后不一致");
+                return null;
+            }
+
             return ssrUrlItem;
         } catch (IllegalArgumentException e) {
             log.error("Error during Base64 decoding: " + e.getMessage(), e);
             log.info(ssrUrl);
         }
         return null;
+    }
+
+    String parserSSRUrlItem(SSRUrlItem ssrUrlItem) {
+        // v2-mixing.huaheyu.com:2033:auth_aes128_md5:aes-256-cfb:http_simple:SFVBSEU/
+        // ?obfsparam=ZG93bmxvYWQubWljcm9zb2Z0LmNvbQ&protoparam=MTA2OTg1OjlpR0ZGZA&remarks=MSDop4bpopEv5LiL6L295LiT55So57q_6Lev&group=6Iqx56a-
+        StringBuilder ssrUrl = new StringBuilder();
+        ssrUrl.append(ssrUrlItem.getServer()).append(":");
+        ssrUrl.append(ssrUrlItem.getPort()).append(":");
+        ssrUrl.append(ssrUrlItem.getProtocol()).append(":");
+        ssrUrl.append(ssrUrlItem.getEncodeMethod()).append(":");
+        ssrUrl.append(ssrUrlItem.getObfs()).append(":");
+        String password = ssrUrlItem.getPassword();
+        String encodePassword = Base64.getUrlEncoder().encodeToString(password.getBytes(StandardCharsets.UTF_8));
+        ssrUrl.append(encodePassword).append("/?");
+        if (null != ssrUrlItem.getObfsparam()) {
+            String obfsparam = urlBase64Encode(ssrUrlItem.getObfsparam());
+            ssrUrl.append("obfsparam=").append(obfsparam).append("&");
+        }
+        if (null != ssrUrlItem.getProtocolParam()) {
+            String protoparam = urlBase64Encode(ssrUrlItem.getProtocolParam());
+            ssrUrl.append("protoparam=").append(protoparam).append("&");
+        }
+        if (null != ssrUrlItem.getRemarks()) {
+            String remarks = urlBase64Encode(ssrUrlItem.getRemarks());
+            ssrUrl.append("remarks=").append(remarks).append("&");
+        }
+        if (null != ssrUrlItem.getGroup()) {
+            String group = urlBase64Encode(ssrUrlItem.getGroup());
+            ssrUrl.append("group=").append(group);
+        }
+        if (ssrUrl.charAt(ssrUrl.length() - 1) == '&') {
+            ssrUrl.deleteCharAt(ssrUrl.length() - 1);
+        }
+        String ssrUrlStr = ssrUrl.toString();
+        return "ssr://" + urlBase64Encode(ssrUrlStr);
     }
 
 
@@ -144,6 +182,14 @@ public class ParseSSTap {
         }
         byte[] decode = Base64.getUrlDecoder().decode(str);
         return new String(decode, StandardCharsets.UTF_8);
+    }
+
+    String urlBase64Encode(String str) {
+        String encode = Base64.getUrlEncoder().encodeToString(str.getBytes(StandardCharsets.UTF_8));
+        while (encode.endsWith("=")) {
+            encode = encode.substring(0, encode.length() - 1);
+        }
+        return encode;
     }
 
     List<String> ssrUrls(String str) {
