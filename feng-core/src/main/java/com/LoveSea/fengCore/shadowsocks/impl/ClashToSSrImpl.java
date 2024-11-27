@@ -23,12 +23,20 @@ import java.util.Objects;
  */
 @Slf4j
 public class ClashToSSrImpl implements ClashToSSr {
+
+    private String group = "clash";
+
     Yaml yaml;
     ParseSSTap parseSSTap;
 
     public ClashToSSrImpl() {
         this.parseSSTap = new ParseSSTapImpl();
         this.yaml = new Yaml();
+    }
+
+    public ClashToSSrImpl(String group) {
+        this();
+        this.group = group;
     }
 
     @Override
@@ -71,6 +79,7 @@ public class ClashToSSrImpl implements ClashToSSr {
             }
             String ssrUrl = switch (type) {
                 case "ss" -> ssTypeHandler(proxy);
+                case "ssr" -> ssrTypeHandler(proxy);
                 default -> null;
             };
             if (StringUtils.isNotBlank(ssrUrl)) {
@@ -90,8 +99,7 @@ public class ClashToSSrImpl implements ClashToSSr {
         String password = (String) proxy.get("password");
         Boolean udp = (Boolean) proxy.get("udp");
         SSRUrlItem ssrUrlItem = new SSRUrlItem();
-        ssrUrlItem.setGroup("clash");
-        ssrUrlItem.setGroup("clash");
+        ssrUrlItem.setGroup(group);
         ssrUrlItem.setRemarks(name);
         ssrUrlItem.setServer(server);
         ssrUrlItem.setPort(port);
@@ -100,9 +108,24 @@ public class ClashToSSrImpl implements ClashToSSr {
         return parseSSTap.parserSSRUrlItem(ssrUrlItem);
     }
 
+    private String ssrTypeHandler(LinkedHashMap<String, Object> proxy) {
+        SSRUrlItem ssrUrlItem = new SSRUrlItem();
+        ssrUrlItem.setRemarks((String) proxy.get("name"));
+        ssrUrlItem.setServer((String) proxy.get("server"));
+        ssrUrlItem.setPort((Integer) proxy.get("port"));
+        ssrUrlItem.setEncodeMethod((String) proxy.get("cipher"));
+        ssrUrlItem.setPassword((String) proxy.get("password"));
+        ssrUrlItem.setProtocol((String) proxy.get("protocol"));
+        ssrUrlItem.setProtocolParam((String) proxy.get("protocolparam"));
+        ssrUrlItem.setObfs((String) proxy.get("obfs"));
+        ssrUrlItem.setObfsparam((String) proxy.get("obfsparam"));
+        ssrUrlItem.setGroup(group);
+        return parseSSTap.parserSSRUrlItem(ssrUrlItem);
+    }
+
     public static void main(String[] args) throws IOException {
         ClashToSSrImpl clashToSSrImpl = new ClashToSSrImpl();
-        String yamlPath = "https://3vpe4.no-mad-world.club/link/0RcAFnE5VM4P3jq0?clash=3&extend=1";
+        String yamlPath = "https://huahe.link/link/fuQAeyIRcEHjZ3zG?clash=2";
         String ss = clashToSSrImpl.transform(yamlPath);
         log.info(ss);
     }
