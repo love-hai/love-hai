@@ -1,4 +1,4 @@
-package com.LoveSea.fengCore.event;
+package com.LoveSea.fengCore.event.internal;
 
 import com.LoveSea.fengCore.event.api.Event;
 import com.LoveSea.fengCore.event.api.EventListener;

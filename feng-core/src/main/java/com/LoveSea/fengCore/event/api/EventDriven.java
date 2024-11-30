@@ -1,4 +1,6 @@
-package com.LoveSea.fengCore.event;
+package com.LoveSea.fengCore.event.api;
+
+import com.LoveSea.fengCore.event.internal.EventDrivenImpl;
 
 /**
  * @author xiahaifeng
