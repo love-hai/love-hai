@@ -8,4 +8,5 @@
 4. 模版模式 template pattern
 5. 抽象工厂模式 abstract factory pattern
 6. 代理模式 proxy pattern
+7. 享元模式 flyweight pattern
 
