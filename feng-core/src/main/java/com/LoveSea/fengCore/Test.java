@@ -9,8 +9,13 @@ import java.math.BigInteger;
  */
 @Slf4j
 public class Test {
-    public static void main(String[] args) throws Exception {
-        BigInteger.probablePrime(512, new java.util.Random());
+    public static void main(String[] args) {
+    }
+    private static class Utensil {
+        static final String NAME = "pan";
+    }
+    private static class Dessert {
+        static final String NAME = "cake";
     }
 
 }

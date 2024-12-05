@@ -1,0 +1,11 @@
+option java_outer_classname = "MqInfo";
+option java_package = "com.loveSea.nettyShow.protobuf";
+
+message MqInfoMessage {
+    required string topic = 1;
+    required string tag = 2;
+    required string key = 3;
+    required string message = 4;
+    required string producerGroup = 5;
+    required string consumerGroup = 6;
+}
