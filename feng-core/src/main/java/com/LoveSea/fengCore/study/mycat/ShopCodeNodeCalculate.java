@@ -1,4 +1,4 @@
-package com.LoveSea.fengCore.commons.utils;
+package com.LoveSea.fengCore.study.mycat;
 
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;

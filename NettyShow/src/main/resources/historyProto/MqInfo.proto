@@ -1,3 +1,7 @@
+syntax = "proto2";
+package com.loveSea.nettyShow.protobuf;
+
+option java_multiple_files = true;
 option java_outer_classname = "MqInfo";
 option java_package = "com.loveSea.nettyShow.protobuf";
 
