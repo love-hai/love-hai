@@ -5,19 +5,15 @@ package com.LoveSea.fengCore.study.algorithms;
  */
 
 public class Snowflake {
-
+    // |时间戳|区域码，机器码|自增序列|
     // 开始时间戳
     private final long twepoch = 1732583798000L;
-
     // 数据中心标识id所占的位数
-
     private final long datacenterIdBits = 5L;
-
     // 机器id所占的位数
     private final long workerIdBits = 5L;
     // 数据中心标识id最大值
     private final long maxDatacenterId = ~(-1L << datacenterIdBits);
-
     // 机器id最大值
     private final long maxWorkerId = ~(-1L << workerIdBits);
     // 自增序列所占的位数
