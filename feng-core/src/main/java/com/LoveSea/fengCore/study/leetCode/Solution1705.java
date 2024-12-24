@@ -15,7 +15,7 @@ import java.util.*;
 
 public class Solution1705 {
     public int eatenApples(int[] apples, int[] days) {
-        TreeSet<AppleInfo> appleInfos = new TreeSet<>();
+        PriorityQueue<AppleInfo> appleInfos = new PriorityQueue<>();
         int result = 0;
         int day = -1;
         outer:
@@ -36,14 +36,14 @@ public class Solution1705 {
                     }
                     break;
                 }
-                AppleInfo appleInfo = appleInfos.first();
+                AppleInfo appleInfo = appleInfos.peek();
                 if(appleInfo.expireDay <= day){
-                    appleInfos.pollFirst();
+                    appleInfos.poll();
                 }else{
                     appleInfo.appleNum--;
                     result++;
                     if(0 == appleInfo.appleNum){
-                        appleInfos.pollFirst();
+                        appleInfos.poll();
                     }
                     break;
                 }
@@ -61,9 +61,6 @@ public class Solution1705 {
         }
         @Override
         public int compareTo(AppleInfo o) {
-            if(this.expireDay == o.expireDay){
-                return 1;
-            }
             return this.expireDay - o.expireDay;
         }
     }
