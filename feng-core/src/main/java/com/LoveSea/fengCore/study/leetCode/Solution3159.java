@@ -1,6 +1,7 @@
 package com.LoveSea.fengCore.study.leetCode;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -69,14 +70,61 @@ public class Solution3159 {
     }
 
     public static void main(String[] args) {
-        int[] nums = {1, 3, 1, 7};
-        int[] queries = {1, 3, 2, 4};
-        int x = 1;
+        int[] nums = {1, 2, 3};
+        int[] queries = {10};
+        int x = 5;
         Solution3159 solution3159 = new Solution3159();
-        int[] result = solution3159.occurrencesOfElement(nums, queries, x);
+        int[] result = solution3159.occurrencesOfElementPlus(nums, queries, x);
         for (int i : result) {
             System.out.println(i);
         }
+    }
+
+    // 大神的代码
+    public int[] occurrencesOfElementPlus(int[] nums, int[] queries, int x) {
+        int len = queries.length;
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == x) {
+                list.add(i);
+            }
+        }
+        int[] answer = new int[len];
+        int query;
+        int location = list.size();
+        for (int i = 0; i < len; i++) {
+            query = queries[i] - 1;
+            if (query >= location) {
+                answer[i] = -1;
+            } else {
+                answer[i] = list.get(query);
+            }
+        }
+        return answer;
+    }
+
+    public int[] occurrencesOfElement2(int[] nums, int[] queries, int x) {
+        int n = nums.length;
+        int index[] = new int[n];
+        Arrays.fill(index, -1);
+        int location = 0;
+        for (int i = 0; i < n; i++) {
+            if (nums[i] == x) {
+                index[location++] = i;
+            }
+        }
+        n--;
+        int len = queries.length;
+        int answer[] = new int[len];
+        for (int i = 0; i < len; i++) {
+            location = queries[i] - 1;
+            if (location > n) {
+                answer[i] = -1;
+            } else {
+                answer[i] = index[location];
+            }
+        }
+        return answer;
     }
 
 }
