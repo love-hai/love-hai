@@ -5,28 +5,39 @@ package com.LoveSea.fengCore.study.algorithms;
  */
 
 public class Kmp {
-    // 我正在试图理解KMP算法。
-    // 虽然我曾经已经理解了它，但是我现在已经忘记了。
-
-
-    public static int[] get_next(String pattern) {
-        // 初始值全部设置成0
-        char[] p = pattern.toCharArray();
+    private int[] get_next(String pattern) {
         int[] next = new int[pattern.length()];
+        int[] prefix = get_prefix(pattern);
+        next[0] = -1;
+        System.arraycopy(prefix, 0, next, 1, pattern.length() - 1);
+        return next;
+    }
+
+    // abcababcabc
+
+    private int[] get_prefix(String pattern) {
+        char[] p = pattern.toCharArray();
+        int[] prefix = new int[pattern.length()];
         int j = 0;
-        for (int i = 1; i < pattern.length() - 1; i++) {
+        for (int i = 1; i < pattern.length(); i++) {
             while (j > 0 && p[i] != p[j]) {
-                j = next[j - 1] + 1;
+                // 最难理解就是这个地方。
+                // 如何比对到第i个字符和第j个字符不相等时。
+                // 看看j前面一位的前缀表的值，的下一位的值是否和i相等。
+                // abcababcabc
+                //      abcababcabc
+                // 当a 和 c 不相等时，看看a 前面一个字符的b的前缀表的值的下一位是否和c相等。
+                j = prefix[j - 1];
             }
             if (p[i] == p[j]) {
                 j++;
             }
-            next[i + 1] = j + 1;
+            prefix[i] = j;
         }
-        return next;
+        return prefix;
     }
 
-    public static int kmp(String s, String pattern) {
+    public int kmp(String s, String pattern) {
         char[] str = s.toCharArray();
         char[] p = pattern.toCharArray();
         int[] next = get_next(pattern);
@@ -47,10 +58,8 @@ public class Kmp {
 
     public static void main(String[] args) {
         String s = "ababcabcabababc";
-        String pattern = "abc";
-        int index = kmp(s, pattern);
-        System.out.println(index);
+        String pattern = "abcab";
+        Kmp kmp = new Kmp();
+        System.out.println(kmp.kmp(s, pattern));
     }
-
-
 }
