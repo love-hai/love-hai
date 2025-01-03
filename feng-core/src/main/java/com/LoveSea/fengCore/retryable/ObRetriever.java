@@ -13,35 +13,35 @@ public interface ObRetriever<R> {
 
     ObRetriever<R> retryIfResult(R retryIfResult);
 
-    ObRetriever<R> retryIfResult(R retryIfResult, int level);
+    ObRetriever<R> retryIfResult(R retryIfResult, RetryLevel level);
 
     ObRetriever<R> retryIfResult(Predicate<R> retryIfState);
 
-    ObRetriever<R> retryIfResult(Predicate<R> retryIfState, int level);
+    ObRetriever<R> retryIfResult(Predicate<R> retryIfState, RetryLevel level);
 
     ObRetriever<R> retryIfState(Supplier<Boolean> retryIfState);
 
-    ObRetriever<R> retryIfState(Supplier<Boolean> retryIfState, int level);
+    ObRetriever<R> retryIfState(Supplier<Boolean> retryIfState, RetryLevel level);
 
     ObRetriever<R> retryIfException(Class<? extends Exception> exception);
 
-    ObRetriever<R> retryIfException(Class<? extends Exception> e, int level);
+    ObRetriever<R> retryIfException(Class<? extends Exception> e, RetryLevel level);
 
     ObRetriever<R> noRetryIfResult(R noRetryIfResult);
 
-    ObRetriever<R> noRetryIfResult(R noRetryIfResult, int level);
+    ObRetriever<R> noRetryIfResult(R noRetryIfResult, RetryLevel level);
 
     ObRetriever<R> noRetryIfResult(Predicate<R> noRetryIfState);
 
-    ObRetriever<R> noRetryIfResult(Predicate<R> noRetryIfState, int level);
+    ObRetriever<R> noRetryIfResult(Predicate<R> noRetryIfState, RetryLevel level);
 
     ObRetriever<R> noRetryIfState(Supplier<Boolean> noRetryIfState);
 
-    ObRetriever<R> noRetryIfState(Supplier<Boolean> noRetryIfState, int level);
+    ObRetriever<R> noRetryIfState(Supplier<Boolean> noRetryIfState, RetryLevel level);
 
     ObRetriever<R> noRetryIfException(Class<? extends Exception> exception);
 
-    ObRetriever<R> noRetryIfException(Class<? extends Exception> e, int level);
+    ObRetriever<R> noRetryIfException(Class<? extends Exception> e, RetryLevel level);
 
 
     R run() throws Exception;
@@ -56,7 +56,7 @@ public interface ObRetriever<R> {
     ObRetriever<R> printRemark(BiConsumer<Integer, String> printRemarkMethod);
 
     // 设置执行方法
-    ObRetriever<R> accept(ReFunMethod reFunObMethod);
+    ObRetriever<R> accept(ReFunObMethod<R> reFunObMethod);
 
     // 设置重试间隔
     ObRetriever<R> sleep(long sleepTime);

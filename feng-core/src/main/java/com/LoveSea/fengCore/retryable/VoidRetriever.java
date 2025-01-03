@@ -21,22 +21,22 @@ public interface VoidRetriever {
     // 设置需要重试的异常
     VoidRetriever retryIfException(Class<? extends Exception> exception);
 
-    VoidRetriever retryIfException(Class<? extends Exception> e, int level);
+    VoidRetriever retryIfException(Class<? extends Exception> e, RetryLevel level);
 
-    VoidRetriever retryIfState(Supplier<Boolean> state, int level);
+    VoidRetriever retryIfState(Supplier<Boolean> state, RetryLevel level);
 
     VoidRetriever retryIfState(Supplier<Boolean> retryIfStates);
 
     VoidRetriever noRetryIfException(Class<? extends Exception> exception);
 
-    VoidRetriever noRetryIfException(Class<? extends Exception> e, int level);
+    VoidRetriever noRetryIfException(Class<? extends Exception> e, RetryLevel level);
 
-    VoidRetriever noRetryIfState(Supplier<Boolean> state, int level);
+    VoidRetriever noRetryIfState(Supplier<Boolean> state, RetryLevel level);
 
     VoidRetriever noRetryIfState(Supplier<Boolean> retryIfStates);
 
     // 设置执行方法
-    VoidRetriever accept(ReFunMethod reFunObMethod);
+    VoidRetriever accept(ReFunVoidMethod reFunObMethod);
 
     // 设置重试间隔
     VoidRetriever sleep(long sleepTime);

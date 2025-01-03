@@ -16,19 +16,33 @@ import java.util.function.Supplier;
 @Slf4j
 public abstract class AbstractRetriever implements Retriever {
 
-    protected int CommonLevel = 0;
+    protected final RetryLevel DefaultCommonLevel = RetryLevel.L_0;
 
-    RetryFlag retryFlag = new RetryFlag();
+    protected final RetryFlag retryFlag = new RetryFlag();
     //    重试等级
-    private Map<Object, Integer> retryLevel;
+    private Map<Object, RetryLevel> retryLevelMap;
     // 出现这些错误需要重试
     private List<Class<? extends Exception>> retryExceptions;
     private List<Supplier<Boolean>> retryIfStates;
 
     private List<Class<? extends Exception>> noRetryExceptions;
     private List<Supplier<Boolean>> noRetryIfStates;
+    // 重试次数
+    protected int retryCount = defaultRetryCount;
+    // 重试间隔
+    private Long sleepTime = defaultSleepTime;
 
-    protected void setNoRetryIfState(Supplier<Boolean> state, int level) {
+    // 打印备注的方法
+    private BiConsumer<Integer, String> printRemarkMethod;
+    // 备注
+    private String remark;
+
+    AbstractRetriever() {
+        // 默认，重试时打印的方法
+        printRemarkMethod = (count, remark) -> log.info("{} 准备第{}次重试", null == remark ? "" : remark, count);
+    }
+
+    protected void setNoRetryIfState(Supplier<Boolean> state, RetryLevel level) {
         if (null == state) return;
         if (null == noRetryIfStates) noRetryIfStates = new ArrayList<>();
         noRetryIfStates.add(state);
@@ -36,10 +50,10 @@ public abstract class AbstractRetriever implements Retriever {
     }
 
     protected void setNoRetryIfState(Supplier<Boolean> state) {
-        setNoRetryIfState(state, 0);
+        setNoRetryIfState(state, DefaultCommonLevel);
     }
 
-    protected void setNoRetryIfException(Class<? extends Exception> e, int level) {
+    protected void setNoRetryIfException(Class<? extends Exception> e, RetryLevel level) {
         if (e == null) return;
         if (null == noRetryExceptions) noRetryExceptions = new ArrayList<>();
         addException(noRetryExceptions, e);
@@ -47,10 +61,10 @@ public abstract class AbstractRetriever implements Retriever {
     }
 
     protected void setNoRetryIfException(Class<? extends Exception> e) {
-        setNoRetryIfException(e, 0);
+        setNoRetryIfException(e, DefaultCommonLevel);
     }
 
-    static void addException(List<Class<? extends Exception>> exceptions, Class<? extends Exception> e) {
+    private static void addException(List<Class<? extends Exception>> exceptions, Class<? extends Exception> e) {
         if (null == e) return;
         if (null == exceptions) return;
         for (int i = 0; i < exceptions.size(); i++) {
@@ -69,30 +83,15 @@ public abstract class AbstractRetriever implements Retriever {
     }
 
 
-    protected void setRetryLevel(Object key, Integer level) {
-        if (null == retryLevel) retryLevel = new ConcurrentHashMap<>();
-        retryLevel.put(key, level);
+    protected void setRetryLevel(Object key, RetryLevel level) {
+        if (null == retryLevelMap) retryLevelMap = new ConcurrentHashMap<>();
+        retryLevelMap.put(key, level);
     }
 
-    protected Integer getRetryLevel(Object key) {
-        if (null == retryLevel) return -1;
-        Integer level = retryLevel.get(key);
-        return null == level ? -1 : level;
-    }
-
-    // 重试次数
-    int retryCount = 3;
-    // 重试间隔
-    Long sleepTime = 1000L;
-    // 打印备注的方法
-    private BiConsumer<Integer, String> printRemarkMethod;
-    // 备注
-    private String remark;
-    ReFunMethod reFunMethod;
-
-    AbstractRetriever() {
-        // 默认，重试时打印的方法
-        printRemarkMethod = (count, remark) -> log.info("{} 准备第{}次重试", null == remark ? "" : "，" + remark, count);
+    protected RetryLevel getRetryLevel(Object key) {
+        if (null == retryLevelMap) return RetryLevel.LEVEL_EMPTY;
+        RetryLevel level = retryLevelMap.get(key);
+        return null == level ? RetryLevel.LEVEL_EMPTY : level;
     }
 
     // 设置备注
@@ -101,8 +100,8 @@ public abstract class AbstractRetriever implements Retriever {
         this.remark = remark;
     }
 
-    @Override
     // 设置打印备注的方法
+    @Override
     public void setPrintRemark(BiConsumer<Integer, String> printRemarkMethod) {
         this.printRemarkMethod = printRemarkMethod;
     }
@@ -110,11 +109,11 @@ public abstract class AbstractRetriever implements Retriever {
     // 设置需要重试的异常
     @Override
     public void setRetryIfException(Class<? extends Exception> e) {
-        setRetryIfException(e, CommonLevel);
+        setRetryIfException(e, DefaultCommonLevel);
     }
 
     @Override
-    public void setRetryIfException(Class<? extends Exception> e, int level) {
+    public void setRetryIfException(Class<? extends Exception> e, RetryLevel level) {
         if (e == null) return;
         if (null == retryExceptions) retryExceptions = new ArrayList<>();
         addException(retryExceptions, e);
@@ -122,7 +121,7 @@ public abstract class AbstractRetriever implements Retriever {
     }
 
     @Override
-    public void setRetryIfState(Supplier<Boolean> state, int level) {
+    public void setRetryIfState(Supplier<Boolean> state, RetryLevel level) {
         if (null == state) return;
         if (null == retryIfStates) retryIfStates = new ArrayList<>();
         retryIfStates.add(state);
@@ -131,14 +130,7 @@ public abstract class AbstractRetriever implements Retriever {
 
     @Override
     public void setRetryIfState(Supplier<Boolean> state) {
-        setRetryIfState(state, CommonLevel);
-    }
-
-
-    @Override
-    // 设置执行方法
-    public void setReFunMethod(ReFunMethod reFunObMethod) {
-        this.reFunMethod = reFunObMethod;
+        setRetryIfState(state, DefaultCommonLevel);
     }
 
     @Override
@@ -207,10 +199,25 @@ public abstract class AbstractRetriever implements Retriever {
         }
     }
 
+    protected void removeClassFromStackTrace(Exception e, Class<?> clazz) {
+        StackTraceElement[] stackTraces = e.getStackTrace();
+        List<StackTraceElement> newStackTraces = new ArrayList<>();
+        for (StackTraceElement stackTrace : stackTraces) {
+            if (stackTrace.getClassName().equals(this.getClass().getName())) {
+                continue;
+            }
+            newStackTraces.add(stackTrace);
+        }
+        if (stackTraces.length == newStackTraces.size()) {
+            return;
+        }
+        e.setStackTrace(newStackTraces.toArray(new StackTraceElement[0]));
+    }
+
 
     public static class RetryFlag {
         private Boolean retry = false;
-        private int level = Integer.MIN_VALUE;
+        private RetryLevel level = RetryLevel.LEVEL_EMPTY;
 
         public boolean isRetry() {
             return retry;
@@ -218,18 +225,18 @@ public abstract class AbstractRetriever implements Retriever {
 
         public void reset() {
             retry = false;
-            level = Integer.MIN_VALUE;
+            level = RetryLevel.LEVEL_EMPTY;
         }
 
-        public void setNoRetry(int level) {
-            if (level >= this.level) {
+        public void setNoRetry(RetryLevel level) {
+            if (level.compareTo(this.level) >= 0) {
                 this.level = level;
                 this.retry = false;
             }
         }
 
-        public void setRetry(int level) {
-            if (level > this.level) {
+        public void setRetry(RetryLevel level) {
+            if (level.compareTo(this.level) > 0) {
                 this.level = level;
                 this.retry = true;
             }

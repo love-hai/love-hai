@@ -8,6 +8,9 @@ import java.util.function.Supplier;
  */
 
 public class VoidRetrieverImpl extends AbstractRetriever implements VoidRetriever {
+
+    private ReFunVoidMethod reFunMethod;
+
     public VoidRetrieverImpl() {
         super();
     }
@@ -17,18 +20,18 @@ public class VoidRetrieverImpl extends AbstractRetriever implements VoidRetrieve
         if (null == reFunMethod) {
             throw new IllegalArgumentException("reFunMethod不能为空");
         }
-        if (!(reFunMethod instanceof ReFunVoidMethod reFunVoidMethod)) {
-            throw new IllegalArgumentException("reFunMethod类型错误");
-        }
         try {
             RetryCount.pushRetryCount(0);
             int count = 0;
             Exception exception = null;
             while (count <= retryCount) {
+                if (Thread.currentThread().isInterrupted()) {
+                    throw new InterruptedException();
+                }
                 retryFlag.reset();
                 // 是否需要重试
                 try {
-                    reFunVoidMethod.run();
+                    reFunMethod.run();
                     this.checkRetryIfState();
                     this.checkNoRetryIfState();
                     if (!retryFlag.isRetry()) {
@@ -47,7 +50,10 @@ public class VoidRetrieverImpl extends AbstractRetriever implements VoidRetrieve
                 RetryCount.addRetryCount();
                 this.printRemark(count);
             }
-            if (null != exception) throw exception;
+            if (null != exception) {
+                this.removeClassFromStackTrace(exception, this.getClass());
+                throw exception;
+            }
         } finally {
             RetryCount.popRetryCount();
         }
@@ -77,13 +83,13 @@ public class VoidRetrieverImpl extends AbstractRetriever implements VoidRetrieve
     }
 
     @Override
-    public VoidRetriever noRetryIfException(Class<? extends Exception> e, int level) {
+    public VoidRetriever noRetryIfException(Class<? extends Exception> e, RetryLevel level) {
         super.setNoRetryIfException(e, level);
         return this;
     }
 
     @Override
-    public VoidRetriever noRetryIfState(Supplier<Boolean> state, int level) {
+    public VoidRetriever noRetryIfState(Supplier<Boolean> state, RetryLevel level) {
         super.setNoRetryIfState(state, level);
         return this;
     }
@@ -109,21 +115,21 @@ public class VoidRetrieverImpl extends AbstractRetriever implements VoidRetrieve
     }
 
     @Override
-    public VoidRetriever retryIfException(Class<? extends Exception> e, int level) {
+    public VoidRetriever retryIfException(Class<? extends Exception> e, RetryLevel level) {
         super.setRetryIfException(e, level);
         return this;
     }
 
     @Override
-    public VoidRetriever retryIfState(Supplier<Boolean> state, int level) {
+    public VoidRetriever retryIfState(Supplier<Boolean> state, RetryLevel level) {
         super.setRetryIfState(state, level);
         return this;
     }
 
     // 设置执行方法
     @Override
-    public VoidRetriever accept(ReFunMethod reFunObMethod) {
-        super.setReFunMethod(reFunObMethod);
+    public VoidRetriever accept(ReFunVoidMethod reFunObMethod) {
+        this.reFunMethod = reFunObMethod;
         return this;
     }
 
