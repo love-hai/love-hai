@@ -79,8 +79,7 @@ public class MyGsonUtils {
     }
 
     /**
-     * MethodName: jsonArrayToList <br>
-     * Description: 把jsonArray转成List
+     * jsonArrayToList : 把jsonArray转成List
      *
      * @param array {@link JsonArray}  :
      * @param cls   {@link Class<T>}         :
