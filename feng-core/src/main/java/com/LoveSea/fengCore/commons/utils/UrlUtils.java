@@ -9,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 
 public class UrlUtils {
 
+
     /**
      * downloadUrlTransfer : 下载地址转码<br>
      *
@@ -32,7 +33,20 @@ public class UrlUtils {
         // 获取文件名
         String fileName = baseUrl.substring(lastSlashes + 1);
         // 将文件名进行转码
-        fileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8);
+        StringBuilder fileNameEncode = new StringBuilder();
+        for (int i = 0; i < fileName.length(); i++) {
+            if (fileName.charAt(i) == ' ') {
+                fileNameEncode.append("%20");
+                continue;
+            }
+            if (fileName.charAt(i) > 128) {
+                String encode = URLEncoder.encode(String.valueOf(fileName.charAt(i)), StandardCharsets.UTF_8);
+                fileNameEncode.append(encode);
+                continue;
+            }
+            fileNameEncode.append(fileName.charAt(i));
+        }
+        fileName = fileNameEncode.toString();
         // 空格会被转码为+，需要将+转换为%20
         fileName = fileName.replaceAll("\\+", "%20");
         return domain + fileName + params;
