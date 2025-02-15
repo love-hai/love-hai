@@ -1,10 +1,11 @@
-package com.LoveSea.fengCore.study.netty.buffer;
+package com.LoveSea.fengCore.study.netty.nio.channel;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
@@ -79,5 +80,30 @@ public class FileChannelTest {
         log.info("limit:{}", buffer.limit());
         log.info("\n");
     }
+
+
+    @Test
+    public void testFileOutPut() throws Exception {
+        File file = new File("C:\\Users\\xiaha\\Downloads\\test.txt");
+        try (FileOutputStream outputStream = new FileOutputStream(file);
+             FileChannel fileChannel = outputStream.getChannel()) {
+            String str = "Hello World";
+            ByteBuffer byteBuffer = ByteBuffer.allocate(10);
+            char[] chars = str.toCharArray();
+            int i = 0;
+            while (i < chars.length) {
+                byteBuffer.put((byte) chars[i]);
+                i++;
+                if (!byteBuffer.hasRemaining()) {
+                    byteBuffer.flip();
+                    fileChannel.write(byteBuffer);
+                    byteBuffer.clear();
+                }
+            }
+            byteBuffer.flip();
+            fileChannel.write(byteBuffer);
+        }
+    }
+
 
 }

@@ -1,4 +1,4 @@
-package com.LoveSea.fengCore.study.netty.buffer;
+package com.LoveSea.fengCore.study.netty.nio.buffer;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
