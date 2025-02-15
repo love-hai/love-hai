@@ -1,10 +1,10 @@
-package com.LoveSea.fengCore.study.netty.tomcat;
+package com.loveSea.nettyShow.tomcat;
 
 /**
  * @author xiahaifeng
  */
 
-public class FirstServlet extends GPServlet{
+public class SecondServlet extends GPServlet{
 
     @Override
     public void doGet(GPRequest request, GPResponse response) throws Exception {
@@ -13,6 +13,6 @@ public class FirstServlet extends GPServlet{
 
     @Override
     public void doPost(GPRequest request, GPResponse response) throws Exception {
-        response.write("This is First Servlet");
+        response.write("This is Second Servlet");
     }
 }

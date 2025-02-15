@@ -1,14 +1,12 @@
-package com.LoveSea.fengCore.study.netty.tomcat;
+package com.loveSea.nettyShow.tomcat;
 
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Test;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.channels.SocketChannel;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
