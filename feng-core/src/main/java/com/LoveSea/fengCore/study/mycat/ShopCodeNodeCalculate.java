@@ -118,7 +118,7 @@ public class ShopCodeNodeCalculate {
         hash.setCount(4);
         hash.setVirtualBucketTimes(160);
         hash.init();
-        System.out.println(nodeName[hash.calculate("Dowell")]);
+        System.out.println(nodeName[hash.calculate("BQX_MY")]);
     }
 
 
