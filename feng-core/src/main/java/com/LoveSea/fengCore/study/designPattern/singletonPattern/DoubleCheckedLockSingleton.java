@@ -15,7 +15,7 @@ public class DoubleCheckedLockSingleton implements Singleton {
 
     public static Singleton getInstance() {
         if (singleton_instance == null) {
-            synchronized (Singleton.class) {
+            synchronized (DoubleCheckedLockSingleton.class) {
                 if (singleton_instance == null) {
                     singleton_instance = new DoubleCheckedLockSingleton();
                 }
