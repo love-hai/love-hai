@@ -1,0 +1,6 @@
+.idea/
+*.log
+*.log.*.gz
+out/
+/target/
+
