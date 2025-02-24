@@ -1,6 +1,6 @@
 package com.LoveSea.fengCore.study.designPattern.proxyPattern;
 
-import com.LoveSea.fengCore.study.designPattern.decoratorPattern.Painting;
+import com.LoveSea.fengCore.study.designPattern.decoratorPattern.example1.Painting;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

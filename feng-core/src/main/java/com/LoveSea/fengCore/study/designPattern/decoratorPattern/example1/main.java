@@ -1,4 +1,4 @@
-package com.LoveSea.fengCore.study.designPattern.decoratorPattern;
+package com.LoveSea.fengCore.study.designPattern.decoratorPattern.example1;
 
 public class main {
     public static void main(String[] args) {
@@ -6,6 +6,5 @@ public class main {
         PictureFramePaintingColor pictureFramePaintingColor = new PictureFramePaintingColor(painting, "红色");
         PictureFramePaintingShape pictureFramePaintingShape = new PictureFramePaintingShape(pictureFramePaintingColor, "圆形");
         pictureFramePaintingShape.make();
-
     }
 }

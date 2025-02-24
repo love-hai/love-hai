@@ -1,4 +1,4 @@
-package com.LoveSea.fengCore.study.designPattern.FlyweightPattern;
+package com.LoveSea.fengCore.study.designPattern.flyweightPattern;
 
 /**
  * @author xiahaifeng

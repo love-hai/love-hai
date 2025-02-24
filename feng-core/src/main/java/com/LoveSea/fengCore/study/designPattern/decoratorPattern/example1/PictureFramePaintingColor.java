@@ -1,4 +1,4 @@
-package com.LoveSea.fengCore.study.designPattern.decoratorPattern;
+package com.LoveSea.fengCore.study.designPattern.decoratorPattern.example1;
 public class PictureFramePaintingColor extends PictureFramePainting {
 
     private String Color;
