@@ -25,7 +25,7 @@ public class RequestMethodParam {
             case HttpServletRequest:
                 return request;
             case RequestParam:
-                String value = Arrays.toString(parameterMap.get(name));
+                String value = parameterMap.get(name)[0];
                 return objectMapper.convertValue(value, type);
             case RequestBody:
                 try {

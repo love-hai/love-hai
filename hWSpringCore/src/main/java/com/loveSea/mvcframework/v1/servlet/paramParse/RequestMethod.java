@@ -5,7 +5,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.Data;
 
 import java.lang.reflect.Method;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,7 +16,7 @@ public class RequestMethod {
     private Method method;
     private RequestMethodParam[] params;
 
-  public   void accept(HttpServletRequest request, HttpServletResponse response) {
+    public void accept(HttpServletRequest request, HttpServletResponse response) {
         Map<String, String[]> parameterMap = request.getParameterMap();
         Object[] paramValues = new Object[params.length];
         for (int i = 0; i < params.length; i++) {

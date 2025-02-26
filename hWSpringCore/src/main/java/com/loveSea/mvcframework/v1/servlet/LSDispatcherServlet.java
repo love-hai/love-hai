@@ -171,6 +171,9 @@ public class LSDispatcherServlet extends HttpServlet {
             UrlHandlerNode urlNode;
             UrlHandlerNode curUrlNode = urlHandlerNode;
             for (String urlSlice : urlSlices) {
+                if (urlSlice.trim().isEmpty()) {
+                    continue;
+                }
                 urlNode = curUrlNode.getHandlerNode(urlSlice);
                 if (null == urlNode) {
                     urlNode = new UrlHandlerNode();
@@ -188,6 +191,9 @@ public class LSDispatcherServlet extends HttpServlet {
                 LSRequestMapping requestMapping = method.getAnnotation(LSRequestMapping.class);
                 String[] methodUrlSlices = requestMapping.value().split("/");
                 for (String urlSlice : methodUrlSlices) {
+                    if (urlSlice.trim().isEmpty()) {
+                        continue;
+                    }
                     urlNode = curUrlNode.getHandlerNode(urlSlice);
                     if (null == urlNode) {
                         urlNode = new UrlHandlerNode();
@@ -198,6 +204,8 @@ public class LSDispatcherServlet extends HttpServlet {
                 // 查看参数
                 Parameter[] parameters = method.getParameters();
                 RequestMethod requestMethod = new RequestMethod();
+                curUrlNode.addHandlerNodeByMethod(RequestActionType.Get, requestMethod);
+
                 requestMethod.setObject(object);
                 requestMethod.setMethod(method);
                 RequestMethodParam[] params = new RequestMethodParam[parameters.length];
@@ -221,6 +229,7 @@ public class LSDispatcherServlet extends HttpServlet {
                             requestMethodParam.setRequestMethodParamType(RequestMethodParam.RequestMethodParamType.RequestBody);
                         }
                     }
+
                 }
             }
         }
