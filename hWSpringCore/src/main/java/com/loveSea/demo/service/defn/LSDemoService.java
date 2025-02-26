@@ -6,4 +6,5 @@ package com.loveSea.demo.service.defn;
 
 public interface LSDemoService {
     int add(int a, int b);
+    int sub(int a, int b);
 }

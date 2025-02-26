@@ -12,4 +12,9 @@ public class LSDemoServiceImpl implements LSDemoService {
     public int add(int a, int b) {
         return a + b;
     }
+
+    @Override
+    public int sub(int a, int b) {
+        return a - b;
+    }
 }

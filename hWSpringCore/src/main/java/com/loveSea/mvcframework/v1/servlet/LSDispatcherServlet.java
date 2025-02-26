@@ -12,7 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.net.URL;
@@ -65,6 +67,10 @@ public class LSDispatcherServlet extends HttpServlet {
             return;
         }
         RequestMethod requestMethod = curUrlNode.getHandlerNodeByMethod(requestActionType);
+        if (null == requestMethod) {
+            resp.getWriter().write("405 Method Not Found");
+            return;
+        }
         requestMethod.accept(req, resp);
     }
 
@@ -150,7 +156,15 @@ public class LSDispatcherServlet extends HttpServlet {
         }
     }
 
-    private void initHandlerMapping() {
+    private final List<Class<? extends Annotation>> annotations = Arrays.asList(
+            LSRequestMapping.class,
+            LSGetMapping.class,
+            LSPostMapping.class,
+            LSPutMapping.class,
+            LSDeleteMapping.class
+    );
+
+    private void initHandlerMapping() throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         if (controllerList.isEmpty()) {
             return;
         }
@@ -169,53 +183,64 @@ public class LSDispatcherServlet extends HttpServlet {
             }
             Method[] methods = clazz.getMethods();
             for (Method method : methods) {
-                if (!method.isAnnotationPresent(LSRequestMapping.class)) {
-                    continue;
-                }
                 UrlHandlerNode curUrlNode = urlHandlerNode;
                 UrlHandlerNode urlNode;
-                LSRequestMapping requestMapping = method.getAnnotation(LSRequestMapping.class);
-                baseUrl = (baseUrl + requestMapping.value()).replaceAll("/+", "/");
-                String[] urlSlices = baseUrl.split("/");
-                for (String urlSlice : urlSlices) {
-                    if (urlSlice.trim().isEmpty()) {
+                for (Class<? extends Annotation> annotation : annotations) {
+                    if (!method.isAnnotationPresent(annotation)) {
                         continue;
                     }
-                    urlNode = curUrlNode.getHandlerNode(urlSlice);
-                    if (null == urlNode) {
-                        urlNode = new UrlHandlerNode();
-                        curUrlNode.addHandlerNode(urlSlice, urlNode);
-                    }
-                    curUrlNode = urlNode;
-                }
-                // 查看参数
-                Parameter[] parameters = method.getParameters();
-                RequestMethod requestMethod = new RequestMethod();
-                RequestActionType[] requestActionTypes = requestMapping.method();
-                for (RequestActionType requestActionType : requestActionTypes) {
-                    curUrlNode.addHandlerNodeByMethod(requestActionType, requestMethod);
-                }
-                requestMethod.setObject(object);
-                requestMethod.setMethod(method);
-                RequestMethodParam[] params = new RequestMethodParam[parameters.length];
-                requestMethod.setParams(params);
-                int paramIndex = -1;
-                for (Parameter parameter : parameters) {
-                    paramIndex++;
-                    RequestMethodParam requestMethodParam = new RequestMethodParam();
-                    params[paramIndex] = requestMethodParam;
-                    requestMethodParam.setType(parameter.getType());
-                    if (parameter.getType() == HttpServletRequest.class) {
-                        requestMethodParam.setRequestMethodParamType(RequestMethodParam.RequestMethodParamType.HttpServletRequest);
-                    } else if (parameter.getType() == HttpServletResponse.class) {
-                        requestMethodParam.setRequestMethodParamType(RequestMethodParam.RequestMethodParamType.HttpServletResponse);
+                    Annotation requestMapping = method.getAnnotation(annotation);
+                    // 获取annotation的value
+                    String urlSuffix;
+                    RequestActionType[] requestActionTypes;
+                    if (requestMapping instanceof LSRequestMapping lsRequestMapping) {
+                        urlSuffix = lsRequestMapping.value();
+                        requestActionTypes = lsRequestMapping.method();
                     } else {
-                        if (parameter.isAnnotationPresent(LSRequestParam.class)) {
-                            LSRequestParam requestParam = parameter.getAnnotation(LSRequestParam.class);
-                            requestMethodParam.setName(requestParam.value());
-                            requestMethodParam.setRequestMethodParamType(RequestMethodParam.RequestMethodParamType.RequestParam);
-                        } else if (parameter.isAnnotationPresent(LSRequestBody.class)) {
-                            requestMethodParam.setRequestMethodParamType(RequestMethodParam.RequestMethodParamType.RequestBody);
+                        requestActionTypes = annotation.getAnnotationsByType(LSRequestMapping.class)[0].method();
+                        urlSuffix = annotation.getMethod("value").invoke(requestMapping).toString();
+                    }
+                    String url = (baseUrl + urlSuffix).replaceAll("/+", "/");
+                    String[] urlSlices = url.split("/");
+                    for (String urlSlice : urlSlices) {
+                        if (urlSlice.trim().isEmpty()) {
+                            continue;
+                        }
+                        urlNode = curUrlNode.getHandlerNode(urlSlice);
+                        if (null == urlNode) {
+                            urlNode = new UrlHandlerNode();
+                            curUrlNode.addHandlerNode(urlSlice, urlNode);
+                        }
+                        curUrlNode = urlNode;
+                    }
+                    // 查看参数
+                    Parameter[] parameters = method.getParameters();
+                    RequestMethod requestMethod = new RequestMethod();
+                    for (RequestActionType requestActionType : requestActionTypes) {
+                        curUrlNode.addHandlerNodeByMethod(requestActionType, requestMethod);
+                    }
+                    requestMethod.setObject(object);
+                    requestMethod.setMethod(method);
+                    RequestMethodParam[] params = new RequestMethodParam[parameters.length];
+                    requestMethod.setParams(params);
+                    int paramIndex = -1;
+                    for (Parameter parameter : parameters) {
+                        paramIndex++;
+                        RequestMethodParam requestMethodParam = new RequestMethodParam();
+                        params[paramIndex] = requestMethodParam;
+                        requestMethodParam.setType(parameter.getType());
+                        if (parameter.getType() == HttpServletRequest.class) {
+                            requestMethodParam.setRequestMethodParamType(RequestMethodParam.RequestMethodParamType.HttpServletRequest);
+                        } else if (parameter.getType() == HttpServletResponse.class) {
+                            requestMethodParam.setRequestMethodParamType(RequestMethodParam.RequestMethodParamType.HttpServletResponse);
+                        } else {
+                            if (parameter.isAnnotationPresent(LSRequestParam.class)) {
+                                LSRequestParam requestParam = parameter.getAnnotation(LSRequestParam.class);
+                                requestMethodParam.setName(requestParam.value());
+                                requestMethodParam.setRequestMethodParamType(RequestMethodParam.RequestMethodParamType.RequestParam);
+                            } else if (parameter.isAnnotationPresent(LSRequestBody.class)) {
+                                requestMethodParam.setRequestMethodParamType(RequestMethodParam.RequestMethodParamType.RequestBody);
+                            }
                         }
                     }
                 }
