@@ -5,15 +5,15 @@ package com.loveSea.mvcframework.v1.servlet;
  */
 
 public enum RequestActionType {
-    Get, Post, Put, Delete;
+    GET, POST, PUT, DELETE;
 
     public static RequestActionType getActionType(String actionType) {
         actionType = actionType.toUpperCase();
         return switch (actionType) {
-            case "GET" -> Get;
-            case "POST" -> Post;
-            case "PUT" -> Put;
-            case "DELETE" -> Delete;
+            case "GET" -> GET;
+            case "POST" -> POST;
+            case "PUT" -> PUT;
+            case "DELETE" -> DELETE;
             default -> null;
         };
     }

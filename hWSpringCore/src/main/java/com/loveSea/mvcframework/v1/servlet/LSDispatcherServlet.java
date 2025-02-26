@@ -204,8 +204,10 @@ public class LSDispatcherServlet extends HttpServlet {
                 // 查看参数
                 Parameter[] parameters = method.getParameters();
                 RequestMethod requestMethod = new RequestMethod();
-                curUrlNode.addHandlerNodeByMethod(RequestActionType.Get, requestMethod);
-
+                RequestActionType[] requestActionTypes = requestMapping.method();
+                for (RequestActionType requestActionType : requestActionTypes) {
+                    curUrlNode.addHandlerNodeByMethod(requestActionType, requestMethod);
+                }
                 requestMethod.setObject(object);
                 requestMethod.setMethod(method);
                 RequestMethodParam[] params = new RequestMethodParam[parameters.length];
