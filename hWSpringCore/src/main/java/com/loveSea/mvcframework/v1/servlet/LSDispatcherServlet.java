@@ -167,30 +167,17 @@ public class LSDispatcherServlet extends HttpServlet {
                 LSRequestMapping requestMapping = clazz.getAnnotation(LSRequestMapping.class);
                 baseUrl = requestMapping.value();
             }
-            String[] urlSlices = baseUrl.split("/");
-            UrlHandlerNode urlNode;
-            UrlHandlerNode curUrlNode = urlHandlerNode;
-            for (String urlSlice : urlSlices) {
-                if (urlSlice.trim().isEmpty()) {
-                    continue;
-                }
-                urlNode = curUrlNode.getHandlerNode(urlSlice);
-                if (null == urlNode) {
-                    urlNode = new UrlHandlerNode();
-                    curUrlNode.addHandlerNode(urlSlice, urlNode);
-                }
-                curUrlNode = urlNode;
-            }
-            UrlHandlerNode rootUrlNode = curUrlNode;
             Method[] methods = clazz.getMethods();
             for (Method method : methods) {
                 if (!method.isAnnotationPresent(LSRequestMapping.class)) {
                     continue;
                 }
-                curUrlNode = rootUrlNode;
+                UrlHandlerNode curUrlNode = urlHandlerNode;
+                UrlHandlerNode urlNode;
                 LSRequestMapping requestMapping = method.getAnnotation(LSRequestMapping.class);
-                String[] methodUrlSlices = requestMapping.value().split("/");
-                for (String urlSlice : methodUrlSlices) {
+                baseUrl = (baseUrl + requestMapping.value()).replaceAll("/+", "/");
+                String[] urlSlices = baseUrl.split("/");
+                for (String urlSlice : urlSlices) {
                     if (urlSlice.trim().isEmpty()) {
                         continue;
                     }
@@ -231,7 +218,6 @@ public class LSDispatcherServlet extends HttpServlet {
                             requestMethodParam.setRequestMethodParamType(RequestMethodParam.RequestMethodParamType.RequestBody);
                         }
                     }
-
                 }
             }
         }
