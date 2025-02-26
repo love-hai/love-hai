@@ -21,4 +21,9 @@ public class LSDemoController {
     public Integer sub(@LSRequestParam("a") Integer a, @LSRequestParam("b") Integer b) {
         return lsDemoService.sub(a, b);
     }
+
+    @LSGetMapping("/getName")
+    public String getName(@LSRequestParam("name") String name) {
+        return "my name is " + name;
+    }
 }
