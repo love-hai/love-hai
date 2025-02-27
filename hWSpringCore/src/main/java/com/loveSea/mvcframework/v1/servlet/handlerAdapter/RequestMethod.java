@@ -1,4 +1,4 @@
-package com.loveSea.mvcframework.v1.servlet.paramParse;
+package com.loveSea.mvcframework.v1.servlet.handlerAdapter;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -27,6 +27,7 @@ public class RequestMethod {
             Object result = method.invoke(object, paramValues);
             response.getWriter().write(result.toString());
         } catch (Exception e) {
+            response.setStatus(500);
             e.printStackTrace();
         }
     }

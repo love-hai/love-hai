@@ -1,8 +1,8 @@
 package com.loveSea.mvcframework.v1.servlet;
 
 import com.loveSea.mvcframework.annotation.*;
-import com.loveSea.mvcframework.v1.servlet.paramParse.RequestMethod;
-import com.loveSea.mvcframework.v1.servlet.paramParse.RequestMethodParam;
+import com.loveSea.mvcframework.v1.servlet.handlerAdapter.RequestMethod;
+import com.loveSea.mvcframework.v1.servlet.handlerAdapter.RequestMethodParam;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;

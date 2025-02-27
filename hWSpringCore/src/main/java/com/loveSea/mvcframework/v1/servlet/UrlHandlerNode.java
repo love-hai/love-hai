@@ -1,6 +1,6 @@
 package com.loveSea.mvcframework.v1.servlet;
 
-import com.loveSea.mvcframework.v1.servlet.paramParse.RequestMethod;
+import com.loveSea.mvcframework.v1.servlet.handlerAdapter.RequestMethod;
 
 import java.util.HashMap;
 import java.util.Map;

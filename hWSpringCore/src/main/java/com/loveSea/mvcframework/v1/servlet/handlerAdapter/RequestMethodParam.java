@@ -1,4 +1,4 @@
-package com.loveSea.mvcframework.v1.servlet.paramParse;
+package com.loveSea.mvcframework.v1.servlet.handlerAdapter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
