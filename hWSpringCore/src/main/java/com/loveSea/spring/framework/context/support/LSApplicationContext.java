@@ -28,7 +28,7 @@ public class LSApplicationContext extends LSDefaultListableApplicationContext im
         try {
             refresh();
         } catch (Exception e) {
-           log.error("refresh error", e);
+            log.error("refresh error", e);
         }
     }
 
@@ -60,7 +60,7 @@ public class LSApplicationContext extends LSDefaultListableApplicationContext im
         }
     }
 
-    private void doRegisterBeanDefinition( List<LSBeanDefinition> beanDefinitions) throws Exception {
+    private void doRegisterBeanDefinition(List<LSBeanDefinition> beanDefinitions) throws Exception {
         for (LSBeanDefinition beanDefinition : beanDefinitions) {
             if (super.beanDefinitionMap.containsKey(beanDefinition.getFactoryBeanName())) {
                 throw new Exception("The " + beanDefinition.getFactoryBeanName() + " is exists!!");
@@ -101,7 +101,7 @@ public class LSApplicationContext extends LSDefaultListableApplicationContext im
         if (!(clazz.isAnnotationPresent(LSController.class) || clazz.isAnnotationPresent(LSService.class))) {
             return;
         }
-        for ( Field field : clazz.getDeclaredFields()) {
+        for (Field field : clazz.getDeclaredFields()) {
             if (!field.isAnnotationPresent(LSAutowired.class)) {
                 continue;
             }
