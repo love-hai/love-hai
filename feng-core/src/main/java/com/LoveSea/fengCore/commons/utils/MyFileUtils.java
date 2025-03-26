@@ -152,4 +152,39 @@ public class MyFileUtils {
         }
     }
 
+    /**
+     * getUnDuplicatedFile : 获取不重复的文件名
+     *
+     * @param folderPath        文件所在文件夹
+     * @param suggestedFileName 建议文件名
+     * @author xiahaifeng
+     */
+    public static File getUnDuplicatedFile(String folderPath, String suggestedFileName) {
+        File folder = new File(folderPath);
+        if (!folder.exists()) {
+            if (!folder.mkdirs()) {
+                log.error("创建文件夹失败");
+                throw new IllegalArgumentException("创建文件夹失败");
+            }
+        }
+        if (!folder.isDirectory()) {
+            log.error("文件夹路径错误");
+            throw new IllegalArgumentException("文件夹路径错误");
+        }
+        File file = new File(folder, suggestedFileName);
+        int period = suggestedFileName.lastIndexOf(".");
+        if (-1 == period) {
+            period = suggestedFileName.length();
+        }
+        String name = suggestedFileName.substring(0, period);
+        String suffix = suggestedFileName.substring(period);
+        int i = 0;
+        do {
+            i++;
+            if (!file.exists()) {
+                return file;
+            }
+            file = new File(folder, name + "(" + i + ")" + suffix);
+        } while (true);
+    }
 }
