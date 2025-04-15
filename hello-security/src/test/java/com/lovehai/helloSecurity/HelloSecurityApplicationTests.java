@@ -1,4 +1,4 @@
-package example.hello_security;
+package com.lovehai.helloSecurity;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,14 +1,16 @@
 package com.lovehai.helloSecurity.controller;
 
 import com.lovehai.helloSecurity.entity.pm.HelloPm;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import javax.validation.Valid;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * @author xiahaifeng
@@ -27,7 +29,11 @@ public class DemoController {
     }
 
     @PostMapping("/hello")
-    public String helloPost(@RequestBody @Valid HelloPm pm) {
+    public String helloPost(@RequestBody @Valid HelloPm pm, BindingResult bindingResult) {
+
+        if(bindingResult.hasErrors()) {
+            return Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage();
+        }
         log.info(pm.toString());
         return "Hello " + pm.getName() + "!";
     }

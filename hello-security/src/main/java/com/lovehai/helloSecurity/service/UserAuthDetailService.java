@@ -26,4 +26,8 @@ public class UserAuthDetailService {
         UserAuthDetail userAuthDetail = userAuthDetailMapper.selectOneByExample(example);
         return Optional.ofNullable(userAuthDetail);
     }
+
+    public int insert(UserAuthDetail userAuthDetail) {
+        return userAuthDetailMapper.insert(userAuthDetail);
+    }
 }
