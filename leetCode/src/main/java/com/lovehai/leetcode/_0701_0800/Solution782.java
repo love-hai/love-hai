@@ -1,4 +1,4 @@
-package com.LoveSea.fengCore.study.leetCode;
+package com.lovehai.leetcode._0701_0800;
 
 /**
  * @author xiahaifeng
