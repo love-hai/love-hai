@@ -1,10 +1,8 @@
-package com.LoveSea.fengCore.study.leetCode;
+package com.lovehai.leetcode._2101_2200;
 
 /**
  * @author xiahaifeng
  */
-
-import java.util.*;
 
 /**
  * 给你一个字符串 s 和一个整数 repeatLimit ，用 s 中的字符构造一个新字符串 repeatLimitedString ，使任何字母 连续 出现的次数都不超过 repeatLimit 次。你不必使用 s 中的全部字符。
