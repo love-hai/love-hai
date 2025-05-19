@@ -27,9 +27,13 @@ public class BaseX {
     }
 
     public BaseX(String[] baseChars, BaseNumIteratorCreator iteratorCreator) {
+        this(baseChars, iteratorCreator, "Base-" + baseChars.length);
+    }
+
+    public BaseX(String[] baseChars, BaseNumIteratorCreator iteratorCreator, String name) {
         this.baseChars = baseChars;
         this._x = baseChars.length;
-        this._name = "Base-" + _x;
+        this._name = name;
         this.baseNumberIteratorCreator = iteratorCreator;
         this.baseCharIndexMap = new HashMap<>();
         for (String baseChar : baseChars) {
