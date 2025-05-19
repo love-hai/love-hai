@@ -1,4 +1,4 @@
-package com.LoveSea.fengCore.study.leetCode;
+package com.lovehai.leetcode._3001_3100;
 
 /**
  * 给你一个下标从 0 开始的字符串 s ，该字符串由用户输入。按键变更的定义是：使用与上次使用的按键不同的键。

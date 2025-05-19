@@ -1,4 +1,4 @@
-package com.LoveSea.fengCore.study.leetCode;
+package com.lovehai.leetcode._3001_3100;
 
 /**
  * 分割数组
