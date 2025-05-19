@@ -1,4 +1,4 @@
-package com.LoveSea.fengCore.commons.utils.baseConversion;
+package com.LoveSea.fengCore.commons.baseConversion;
 
 import java.util.*;
 
@@ -18,7 +18,7 @@ public class BaseX {
 
     private final Map<String, Integer> baseCharIndexMap;
 
-    private BaseNumIteratorCreator baseNumberIteratorCreator;
+    private final BaseNumIteratorCreator baseNumberIteratorCreator;
 
     private final int _x;
 

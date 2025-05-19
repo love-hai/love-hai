@@ -1,4 +1,4 @@
-package com.LoveSea.fengCore.commons.utils.baseConversion;
+package com.LoveSea.fengCore.commons.baseConversion;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
