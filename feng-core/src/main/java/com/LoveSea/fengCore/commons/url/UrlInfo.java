@@ -1,5 +1,6 @@
-package com.LoveSea.fengCore.commons.utils;
+package com.LoveSea.fengCore.commons.url;
 
+import com.LoveSea.fengCore.commons.utils.StringUtils;
 import lombok.Getter;
 
 import java.util.HashMap;
@@ -17,7 +18,7 @@ public class UrlInfo {
 
     public static UrlInfo parse(String url) {
         UrlInfo urlInfo = new UrlInfo();
-        if (MyStringUtils.isBlank(url)) {
+        if (StringUtils.isBlank(url)) {
             return urlInfo;
         }
         urlInfo.url = url;
@@ -32,7 +33,7 @@ public class UrlInfo {
     private final static Map<String, String> EmptyMap = Map.of();
 
     private static Map<String, String> getUrlParams(String paramStr) {
-        if (MyStringUtils.isBlank(paramStr)) {
+        if (StringUtils.isBlank(paramStr)) {
             return EmptyMap;
         }
         Map<String, String> map = new HashMap<>();

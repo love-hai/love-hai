@@ -1,6 +1,6 @@
 package com.LoveSea.fengCore.shadowsocks.impl;
 
-import com.LoveSea.fengCore.commons.utils.UrlInfo;
+import com.LoveSea.fengCore.commons.url.UrlInfo;
 import com.LoveSea.fengCore.shadowsocks.ParseSSTap;
 import com.LoveSea.fengCore.shadowsocks.SSRUrlGroup;
 import com.LoveSea.fengCore.shadowsocks.SSRUrlItem;

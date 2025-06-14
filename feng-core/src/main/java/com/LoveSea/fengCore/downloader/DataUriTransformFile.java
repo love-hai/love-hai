@@ -1,6 +1,6 @@
 package com.LoveSea.fengCore.downloader;
 
-import com.LoveSea.fengCore.commons.utils.MyFileUtils;
+import com.LoveSea.fengCore.commons.utils.FileUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -56,7 +56,7 @@ public class DataUriTransformFile {
         } catch (Exception e) {
             log.error("DataUriTransformFile transform error", e);
         }
-        File newFileFile = MyFileUtils.getUnDuplicatedFile(targetDir.getPath(), suggestFileName);
+        File newFileFile = FileUtils.getUnDuplicatedFile(targetDir.getPath(), suggestFileName);
         // 重命名文件
         if (!file.renameTo(newFileFile)) {
             log.error("rename file error");

@@ -9,7 +9,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 @Slf4j
-public class MyFileUtils {
+public class FileUtils {
 
     /**
      * coverOldFile : 覆盖旧文件<br>
@@ -83,7 +83,7 @@ public class MyFileUtils {
      * @param path 文件路径
      */
     private String getFileName(String path) {
-        if (MyStringUtils.isEmpty(path)) {
+        if (StringUtils.isEmpty(path)) {
             throw new RuntimeException("文件路径不能为空");
         }
         int index = 0;

@@ -1,6 +1,6 @@
 package com.LoveSea.fengCore.downloader;
 
-import com.LoveSea.fengCore.commons.utils.MyFileUtils;
+import com.LoveSea.fengCore.commons.utils.FileUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
@@ -111,7 +111,7 @@ public class WithProxyAuthDownloader {
                         outputStream.write(buffer, 0, bytesRead);
                     }
                 }
-                File newFile = MyFileUtils.getUnDuplicatedFile(targetDir, suggestFileName);
+                File newFile = FileUtils.getUnDuplicatedFile(targetDir, suggestFileName);
                 if (!tempFile.renameTo(newFile)) {
                     throw new RuntimeException("重命名文件失败");
                 }

@@ -2,12 +2,17 @@ package com.LoveSea.fengCore.commons.utils;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
+import java.time.temporal.WeekFields;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 
 @Slf4j
-public class MyDateTimeUtils {
+public class DateTimeUtils {
     static Calendar calendar = Calendar.getInstance();
 
     static String[] weekDaysChineseLong = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
@@ -125,6 +130,7 @@ public class MyDateTimeUtils {
 
     /**
      * getDiffDate:(求两个日期之间相差的天数(日期相减)). <br/>
+     *
      * @author zhiyong.li
      */
     public static int getDiffDate(Date date1, Date date2) {
@@ -143,7 +149,35 @@ public class MyDateTimeUtils {
         return (int) ((date1.getTime() - date2.getTime()) / 1000);
     }
 
-    public static void main(String[] args) {
+    /**
+     * getIsoWeekKey : 获取对应参数日期的iso周制的 weekKey<br>
+     *
+     * @param localDate 日期
+     * @return 对应iso周所在的年份*100+iso周数
+     * @author xiahaifeng
+     */
+    public static int getIsoWeekKey(LocalDate localDate) {
+        WeekFields weekFields = WeekFields.of(DayOfWeek.MONDAY, 4);
+        int weekOfYear = localDate.get(weekFields.weekOfWeekBasedYear());
+        int weekBasedYear = localDate.get(weekFields.weekBasedYear());
+        return weekBasedYear * 100 + weekOfYear;
+    }
 
+    public static LocalDate[] getIsoWeekStartAndEnd(int weekKey) {
+        int weekOfYear = weekKey % 100;
+        int weekBasedYear = weekKey / 100;
+        WeekFields weekFields = WeekFields.of(DayOfWeek.MONDAY, 4);
+        LocalDate startDate = LocalDate.of(weekBasedYear, 1, 1)
+                .with(weekFields.weekOfWeekBasedYear(), weekOfYear)
+                .with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        LocalDate endDate = startDate.plusDays(6);
+        return new LocalDate[]{startDate, endDate};
+    }
+
+    public static void main(String[] args) {
+       LocalDate[] dates = getIsoWeekStartAndEnd(202522);
+        System.out.println("Start Date: " + dates[0]);
+        System.out.println("End Date: " + dates[1]);
+        System.out.println("Week Key: " + getIsoWeekKey(dates[0]));
     }
 }
