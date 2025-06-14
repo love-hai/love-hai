@@ -1,7 +1,5 @@
 package com.LoveSea.fengCore.study.jdk.dynamicProxy.example3;
 
-import org.aspectj.weaver.IClassFileProvider;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
