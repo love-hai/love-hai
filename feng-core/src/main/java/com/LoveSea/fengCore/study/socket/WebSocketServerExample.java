@@ -1,9 +1,7 @@
 package com.LoveSea.fengCore.study.socket;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.LoveSea.fengCore.commons.utils.JsonUtils;
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.slf4j.Slf4j;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
@@ -12,7 +10,6 @@ import org.java_websocket.server.WebSocketServer;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
-import java.util.Optional;
 
 /**
  * @author xiahaifeng
@@ -31,22 +28,23 @@ public class WebSocketServerExample extends WebSocketServer {
 
     @Override
     public void onClose(WebSocket conn, int code, String reason, boolean remote) {
-        log.info("Closed connection: " + conn.getRemoteSocketAddress());
+        log.info("Closed connection: {}", conn.getRemoteSocketAddress());
     }
 
     @Override
     public void onMessage(WebSocket conn, String message) {
         try {
-            log.info("Received message: " + message);
+            log.info("Received message: {}", message);
             // 查看命令
-            JsonObject jsonObject = new JsonParser().parse(message).getAsJsonObject();
-            JsonElement commandEle = jsonObject.get("command");
+            JsonNode jsonObject = JsonUtils.readTree(message);
+
+            JsonNode commandEle = jsonObject.get("command");
             if (null == commandEle) {
-                log.error("Command not found in message: " + message);
+                log.error("Command not found in message: {}", message);
                 return;
             }
-            String command = commandEle.getAsString();
-            JsonElement paramsEle = jsonObject.get("params");
+            String command = commandEle.asText();
+            JsonNode paramsEle = jsonObject.get("params");
             switch (command) {
                 case "list":
                     this.sendList(conn, jsonObject);
@@ -61,40 +59,20 @@ public class WebSocketServerExample extends WebSocketServer {
                     conn.send("Unknown command: " + command);
             }
         } catch (Exception e) {
-            log.error("Error processing message: " + message, e);
+            log.error("Error processing message: {}", message, e);
         }
     }
 
-    void sendList(WebSocket conn, JsonObject jsonObject) {
-        JsonElement paramsEle = jsonObject.get("params");
-        JsonObject params = paramsEle.getAsJsonObject();
-        String searchValue = Optional.ofNullable(params.get("searchValue")).map(JsonElement::getAsString).orElse("");
-        long minDownloadId = params.get("minDownloadId").getAsLong();
-        JsonArray jsonArray = new JsonArray();
-        for (int i = 10; i > 0; i--) {
-            JsonObject downloadItem = new JsonObject();
-            downloadItem.addProperty("id", i);
-            downloadItem.addProperty("name", "name" + i);
-            downloadItem.addProperty("url", "url" + i);
-            downloadItem.addProperty("downloadTime", "2021-07-01 12:00:00");
-            jsonArray.add(downloadItem);
-        }
-        jsonObject.add("response", jsonArray);
-        jsonObject.addProperty("success", true);
-        conn.send(jsonObject.toString());
+    void sendList(WebSocket conn, JsonNode jsonObject) {
     }
 
-    void delete(WebSocket conn, JsonObject jsonObject) {
-        JsonElement paramsEle = jsonObject.get("params");
-        JsonObject params = paramsEle.getAsJsonObject();
-        long id = params.get("id").getAsLong();
-        jsonObject.addProperty("success", true);
-        conn.send(jsonObject.toString());
+    void delete(WebSocket conn, JsonNode jsonObject) {
+
     }
 
     @Override
     public void onError(WebSocket conn, Exception ex) {
-        log.error("Error occurred on connection: " + conn.getRemoteSocketAddress(), ex);
+        log.error("Error occurred on connection: {}", conn.getRemoteSocketAddress(), ex);
     }
 
     @Override
