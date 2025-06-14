@@ -66,12 +66,6 @@
             <version>5.11.3</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.2</version>
-            <scope>test</scope>
-        </dependency>
         <!--  yaml文件解析   -->
         <dependency>
             <groupId>org.yaml</groupId>
