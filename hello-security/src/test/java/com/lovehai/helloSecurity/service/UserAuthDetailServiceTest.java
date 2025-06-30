@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest(classes = HelloSecurityApplication.class)
 @Slf4j
 public class UserAuthDetailServiceTest {
+
     @Autowired
     private UserAuthDetailService userAuthDetailService;
 
@@ -27,7 +28,7 @@ public class UserAuthDetailServiceTest {
             userAuthDetailService.insert(userAuthDetail);
         } catch (Exception e) {
             String message = e.getMessage();
-            log.error("xxxxx"+e.getMessage());
+            log.error("xxxxx{}", e.getMessage());
             log.error("error", e);
         }
     }

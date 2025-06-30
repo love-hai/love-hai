@@ -5,10 +5,22 @@
  */
 package com.LoveSea.fengCore;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author xiahaifeng
@@ -16,63 +28,27 @@ import java.util.List;
 @Slf4j
 public class Test {
 
-    private static final char[] OperationSymbols = {'+', '-', '*', '/', '<', '>', '='};
-    private static final char[] SeparationSymbols = {','};
 
-    private static boolean isSymbol(char c, char[] symbols) {
-        for (char symbol : symbols) {
-            if (c == symbol) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static List<String> findEvalsBySeparation(String formula) {
-        return findEvalsBySymbols(formula, SeparationSymbols);
-    }
-
-    public static List<String> findEvalsByOperation(String formula) {
-        return findEvalsBySymbols(formula, OperationSymbols);
-    }
-
-
-    public static List<String> findEvalsBySymbols(String formula, char[] symbols) {
-        List<String> evals = new ArrayList<>();
-        int balanced = 0;
-        int evalFirstIndex = -1;
-        boolean isSymbols = true;
-        for (int i = 0; i < formula.length(); i++) {
-            if (0 == balanced) {
-                if (isSymbols && !isSymbol(formula.charAt(i), symbols)) {
-                    evals.add(formula.substring(evalFirstIndex + 1, i).trim());
-                    evalFirstIndex = i - 1;
-                    isSymbols = false;
-                } else if (!isSymbols && isSymbol(formula.charAt(i), symbols)) {
-                    evals.add(formula.substring(evalFirstIndex + 1, i).trim());
-                    evalFirstIndex = i - 1;
-                    isSymbols = true;
+    public static void main(String[] args) throws IOException, InterruptedException {
+        LinkedBlockingQueue<Integer> queue = new LinkedBlockingQueue<>();
+        CompletableFuture.runAsync(() -> {
+            try {
+                while (true) {
+                    Integer a = queue.take();
+                    log.info("a:{}", a);
                 }
+            } catch (Exception e) {
+                log.error(e.getMessage(), e);
             }
-            if ('(' == formula.charAt(i)) {
-                balanced += 1;
-            }
-            if (')' == formula.charAt(i)) {
-                balanced -= 1;
-            }
+        });
+        for (int i = 0; i < 10; i++) {
+            Thread.sleep(1000);
+            queue.put(i);
         }
-        if (balanced != 0) {
-            throw new RuntimeException(" Round not found balanced");
+        // 想让他中断
+        for (int i = 0; i < 10; i++) {
+            Thread.sleep(1000);
         }
-        evals.add(formula.substring(evalFirstIndex + 1).trim());
-        return evals;
-    }
 
-    public static void main(String[] args) {
-        String formula = "IF((X2+Y2)/R2>AA2,0,(AA2-(X2+Y2)/R2)*R2),0";
-        List<String> as = findEvalsBySeparation( formula);
-        for (String a : as) {
-            System.out.println(a);
-        }
     }
 }
