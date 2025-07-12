@@ -1,7 +1,5 @@
 package com.LoveSea.fengCore.commons.utils;
 
-import java.text.NumberFormat;
-
 /**
  * @author xiahaifeng
  * @since 2024/4/11 17:02
@@ -56,6 +54,41 @@ public class StringUtils {
         return true;
     }
 
-    // 创建一个百分比格式化对象
-    static NumberFormat percentageFormat = NumberFormat.getPercentInstance();
+    /**
+     * format : 将msg中的{}转化成args
+     *
+     * @param msg  信息
+     * @param args 需要替换的参数
+     */
+    public static String format(String msg, Object... args) {
+        StringBuilder sb = new StringBuilder();
+        char[] chars = msg.toCharArray();
+        int count = 0;
+        for (int i = 0; i < chars.length; i++) {
+            if (count >= args.length) {
+                sb.append(chars, i, chars.length - i);
+                break;
+            }
+            if (chars[i] == '\\') {
+                if (i < chars.length - 2 && chars[i + 1] == '{' && chars[i + 2] == '}') {
+                    sb.append("{}");
+                    i += 2;
+                    continue;
+                } else if (i < chars.length - 1 && chars[i + 1] == '\\') {
+                    sb.append(chars[i]);
+                    i++;
+                    continue;
+                }
+            } else if (chars[i] == '{') {
+                if (i < chars.length - 1 && chars[i + 1] == '}') {
+                    sb.append(args[count++]);
+                    i++;
+                    continue;
+                }
+            }
+            sb.append(chars[i]);
+        }
+        return sb.toString();
+    }
+
 }
