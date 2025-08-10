@@ -175,9 +175,7 @@ public class DateTimeUtils {
     }
 
     public static void main(String[] args) {
-       LocalDate[] dates = getIsoWeekStartAndEnd(202522);
-        System.out.println("Start Date: " + dates[0]);
-        System.out.println("End Date: " + dates[1]);
-        System.out.println("Week Key: " + getIsoWeekKey(dates[0]));
+        int key = getIsoWeekKey(LocalDate.of(2025, 7, 15));
+        System.out.println("key: " + key);
     }
 }

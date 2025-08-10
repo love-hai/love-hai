@@ -1,9 +1,6 @@
-package com.LoveSea.fengCore.study.leetCode;
-
-import org.apache.commons.lang3.ArrayUtils;
+package com.lovehai.leetcode._0801_0900;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -18,15 +15,15 @@ import java.util.List;
 public class Solution881 {
 
     public int numRescueBoats(int[] people, int limit) {
-        if(0==people.length){
+        if (0 == people.length) {
             return 0;
         }
         heapSort(people);
         int left = 0;
-        int right = people.length-1;
+        int right = people.length - 1;
         int num = 0;
-        while (left <= right){
-            if(people[left] + people[right] <= limit){
+        while (left <= right) {
+            if (people[left] + people[right] <= limit) {
                 left++;
             }
             right--;
@@ -34,6 +31,7 @@ public class Solution881 {
         }
         return num;
     }
+
     // 快速排序
     public void heapSort(int[] arr) {
         int n = arr.length;
@@ -83,39 +81,39 @@ public class Solution881 {
     }
 
     public int numRescueBoats1(int[] people, int limit) {
-        if(null==people || 0==people.length){
+        if (null == people || 0 == people.length) {
             return 0;
         }
-        if(0>=limit){
+        if (0 >= limit) {
             return 0;
         }
         List<Integer> list = new ArrayList<>();
         for (int person : people) {
             list.add(person);
         }
-        list.sort((o1, o2) -> o2-o1);
+        list.sort((o1, o2) -> o2 - o1);
         int i = 0;
         // 用于记录剩余的重量
         int remainder = limit;
         // 用于记录船的数量
         int num = 1;
-        while (!list.isEmpty()){
-           if(i >= list.size()) {
-               i = 0;
-               remainder = limit;
-               num++;
-           }
-            if(0==remainder|| remainder < list.get(list.size()-1)) {
+        while (!list.isEmpty()) {
+            if (i >= list.size()) {
                 i = 0;
                 remainder = limit;
                 num++;
             }
-            if(remainder >= list.get(i)) {
+            if (0 == remainder || remainder < list.get(list.size() - 1)) {
+                i = 0;
+                remainder = limit;
+                num++;
+            }
+            if (remainder >= list.get(i)) {
                 remainder -= list.get(i);
                 list.remove(i);
                 continue;
             }
-            if(remainder < list.get(i)){
+            if (remainder < list.get(i)) {
                 i++;
             }
         }
@@ -124,7 +122,7 @@ public class Solution881 {
 
     public static void main(String[] args) {
         Solution881 solution881 = new Solution881();
-        int[] people = {3,2,2,1};
+        int[] people = {3, 2, 2, 1};
         int limit = 3;
         System.out.println(solution881.numRescueBoats(people, limit));
     }
