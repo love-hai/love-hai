@@ -1,4 +1,4 @@
-package com.lovehai.leetcode._2500_2600;
+package com.lovehai.leetcode._2501_2600;
 
 /**
  * 2595. 奇偶位数

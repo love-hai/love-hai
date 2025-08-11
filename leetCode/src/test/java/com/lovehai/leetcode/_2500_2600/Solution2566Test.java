@@ -1,5 +1,6 @@
 package com.lovehai.leetcode._2500_2600;
 
+import com.lovehai.leetcode._2501_2600.Solution2566;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

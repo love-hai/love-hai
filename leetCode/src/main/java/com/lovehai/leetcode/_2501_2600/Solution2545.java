@@ -1,4 +1,4 @@
-package com.lovehai.leetcode._2500_2600;
+package com.lovehai.leetcode._2501_2600;
 
 /**
  * 2545. 根据第 K 场考试的分数排序

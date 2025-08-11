@@ -1,4 +1,4 @@
-package com.lovehai.leetcode._2500_2600;
+package com.lovehai.leetcode._2501_2600;
 
 /**
  * 2566. 替换一个数字后的最大差值
