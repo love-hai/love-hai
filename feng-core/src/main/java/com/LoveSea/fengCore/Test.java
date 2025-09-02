@@ -7,22 +7,12 @@ package com.LoveSea.fengCore;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
-import java.nio.file.Path;
-
 /**
  * @author xiahaifeng
  */
 @Slf4j
 public class Test {
-
-
-    public static void main(String[] args) throws IOException {
-
-        Path tempDir = Path.of(System.getProperty("java.io.tmpdir"));
-        log.info(tempDir. toString());
+    public static void main(String[] args) {
 
     }
-
-
 }
