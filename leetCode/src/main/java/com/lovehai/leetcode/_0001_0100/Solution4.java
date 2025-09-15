@@ -13,12 +13,12 @@ public class Solution4 {
         if (nums1.length < nums2.length) {
             return findMedianSortedArrays(nums2, nums1);
         }
-        // num1 .length >= num2.length
-        int mid1 = (nums1.length + nums2.length + 1) / 2 - 1;
-        int mid2 = (nums1.length + nums2.length + 2) / 2 - 1;
         if (nums1.length == 0) {
             return 0;
         }
+        // num1 .length >= num2.length
+        int mid1 = (nums1.length + nums2.length + 1) / 2 - 1;
+        int mid2 = (nums1.length + nums2.length + 2) / 2 - 1;
         if (nums2.length == 0) {
             return (nums1[mid1] + nums1[mid2]) / 2.0;
         }
