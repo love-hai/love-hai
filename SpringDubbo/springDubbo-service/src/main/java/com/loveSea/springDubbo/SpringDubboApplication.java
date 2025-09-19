@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @EnableDubbo
-@MapperScan("com.loveSea.springDubbo.mybatis.mapper")
+@MapperScan("com.loveSea.springDubbo.mybatis")
 public class SpringDubboApplication {
 
     public static void main(String[] args) {
