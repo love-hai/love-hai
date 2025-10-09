@@ -148,34 +148,4 @@ public class DateTimeUtils {
     public static int getDiffSecond(Date date1, Date date2) {
         return (int) ((date1.getTime() - date2.getTime()) / 1000);
     }
-
-    /**
-     * getIsoWeekKey : 获取对应参数日期的iso周制的 weekKey<br>
-     *
-     * @param localDate 日期
-     * @return 对应iso周所在的年份*100+iso周数
-     * @author xiahaifeng
-     */
-    public static int getIsoWeekKey(LocalDate localDate) {
-        WeekFields weekFields = WeekFields.of(DayOfWeek.MONDAY, 4);
-        int weekOfYear = localDate.get(weekFields.weekOfWeekBasedYear());
-        int weekBasedYear = localDate.get(weekFields.weekBasedYear());
-        return weekBasedYear * 100 + weekOfYear;
-    }
-
-    public static LocalDate[] getIsoWeekStartAndEnd(int weekKey) {
-        int weekOfYear = weekKey % 100;
-        int weekBasedYear = weekKey / 100;
-        WeekFields weekFields = WeekFields.of(DayOfWeek.MONDAY, 4);
-        LocalDate startDate = LocalDate.of(weekBasedYear, 1, 1)
-                .with(weekFields.weekOfWeekBasedYear(), weekOfYear)
-                .with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
-        LocalDate endDate = startDate.plusDays(6);
-        return new LocalDate[]{startDate, endDate};
-    }
-
-    public static void main(String[] args) {
-        int key = getIsoWeekKey(LocalDate.of(2025, 7, 15));
-        System.out.println("key: " + key);
-    }
 }
