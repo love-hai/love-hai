@@ -1,8 +1,5 @@
 package com.lovehai.leetcode._0001_0100;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  *
  * @author xiahaifeng

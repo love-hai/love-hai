@@ -33,6 +33,8 @@ public class StringUtils {
         return true;
     }
 
+
+
     public static int parseToInteger(CharSequence cs) {
         if (isBlank(cs) || !isNumeric(cs)) {
             throw new IllegalArgumentException("value is not a number");
@@ -53,6 +55,16 @@ public class StringUtils {
         }
         return true;
     }
+
+
+    public static boolean isNumber(CharSequence c) {
+        if(isBlank(c)){
+            return false;
+        }
+        String str = c.toString();
+        return str.matches("[-+]?((\\d+(\\.\\d*)?)|(\\.\\d+))([eE][-+]?\\d+)?");
+    }
+
 
     /**
      * format : 将msg中的{}转化成args
@@ -90,5 +102,4 @@ public class StringUtils {
         }
         return sb.toString();
     }
-
 }

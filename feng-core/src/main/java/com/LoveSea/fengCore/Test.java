@@ -7,9 +7,6 @@ package com.LoveSea.fengCore;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
  * @author xiahaifeng
  */
@@ -17,15 +14,28 @@ import java.util.regex.Pattern;
 public class Test {
 
     public static void main(String[] args) {
-        Pattern pattern = Pattern.compile("((\\d+\\.)*\\d+).jar");
-        String jarName = "1.0.0.jar";
-        Matcher matcher = pattern.matcher(jarName);
-       if (matcher.matches()){
-      log.info("{}",matcher.group(0));
-           for (int i = 0; i < matcher.groupCount(); i++){
-               log.info("{}",matcher.group(i+1));
-           }
-       }
-    }
 
+    }
+    public int nextBeautifulNumber(int n) {
+        // 找到 x 位的最大一个漂亮数
+        int x = String.valueOf(n).length();
+        int res = 0;
+        for (int i = 1; i <= x; i++) {
+            res = res * 10 + x;
+        }
+        if(res <= n){
+            // 找到 x + 1 位的最小的漂亮数
+            res = 1;
+            for (int i = 1; i <= x; i++) {
+                res = res * 10 + x;
+            }
+            return res;
+        }else {
+            int lastRes = res;
+            while (true){
+                res =  0;
+
+            }
+        }
+    }
 }
